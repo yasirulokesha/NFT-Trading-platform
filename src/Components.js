@@ -3,6 +3,23 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SearchIcon from '@mui/icons-material/Search';
+import { Container } from '@mui/material';
+
+
+// Main styled
+const Group = styled('div')(() => ({
+    display: 'flex'
+}))
+
+const Logo = styled('div')(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '70px',
+    width: '70px',
+    backgroundColor: "red"
+}))
 
 // SearchBox
 const Search = styled('div')(({ theme }) => ({
@@ -13,8 +30,10 @@ const Search = styled('div')(({ theme }) => ({
         backgroundColor: alpha("#D9D9D9", 0.25),
     },
     marginLeft: 0,
+    marginRight: 20,
     width: '100%',
-    maxWidth: '400px',
+    height: '39px',
+    maxWidth: '600px',
     [theme.breakpoints.up('sm')]: {
         marginLeft: theme.spacing(1),
         width: 'auto',
@@ -36,14 +55,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '90%',
-        [theme.breakpoints.up('sm')]: {
-            width: '12ch',
-            '&:focus': {
-                width: '20ch',
-            },
-        },
+        width: '100%'
+        // padding: theme.spacing(1, 1, 1, 0),
+        // paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        // transition: theme.transitions.create('width'),
+        // width: '90%',
+        // [theme.breakpoints.up('sm')]: {
+        //     width: '12ch',
+        //     '&:focus': {
+        //         width: '20ch',
+        //     },
+        // },
     },
 }));
 
@@ -60,11 +82,15 @@ const ShortcutSymbol = styled('div')(({ theme }) => ({
 }))
 
 // Header
-const Header = styled('div')(({theme}) => ({
+const Header = styled('div')(({ theme }) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignContent: 'center',
-    maxWidth: '1300px'
+    alignItems: 'center',
+    // maxWidth: '1300px',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    height: '100px'
 }))
 
 
@@ -85,9 +111,16 @@ export function SearchBox() {
 
 export function NavBar() {
     return (
-        <Header>
-            <SearchBox />
-            <AccountCircleIcon fontSize='large'/>
-        </Header>
+        <Container fixed>
+            <Header>
+                <Logo >
+                    <a href='#'>Logo</a>
+                </Logo>
+                <Group>
+                    <SearchBox />
+                    <AccountCircleIcon fontSize='large' />
+                </Group>
+            </Header>
+        </Container>
     )
 }
