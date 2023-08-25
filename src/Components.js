@@ -1,16 +1,21 @@
 import React from 'react'
-import { styled, alpha } from '@mui/material/styles';
+import { styled, alpha, createTheme, makeStyles } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SearchIcon from '@mui/icons-material/Search';
-import { Container } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 
 
-// Main styled
+
+// Main styled --------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Grouping - Horizontally
 const Group = styled('div')(() => ({
-    display: 'flex'
+    display: 'flex',
+    alignItems: 'center'
 }))
 
+// Logo
 const Logo = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 2),
     display: 'flex',
@@ -21,7 +26,66 @@ const Logo = styled('div')(({ theme }) => ({
     backgroundColor: "red"
 }))
 
-// SearchBox
+// Profile
+const ProfPicStyles = styled("img")(() => ({
+    borderRadius: '100%',
+    backgroundColor: "#B5B5B5",
+    margin: 10
+}))
+export function ProfilePic(props) {
+    return (
+        <ProfPicStyles src={props.src} alt='Profile picture' width={props.width} />
+    )
+}
+
+
+
+// Components --------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Assest - NFT Card
+const AssestBlock = styled('div')(
+    () => (
+        {
+            display: "flex",
+            flexDirection: 'column',
+            width: 250,
+            '&:hover': {
+                transform: "scale(1.002)",
+                transitionDuration: "500ms",
+                transitionTimingFunction: "ease",
+                filter: "drop-shadow(5px 17px 54px rgba(0, 0, 0, 0.15))"
+            }
+        }
+    )
+)
+const AssestPhoto = styled('img')(() => ({
+    display: "block",
+    backgroundColor: "red",
+    width: '100%',
+    height: 250,
+    borderRadius: '10px',
+    overflow: 'hidden'
+}))
+export function Assest(Props) {
+    return (
+        <AssestBlock>
+            <AssestPhoto src={Props.src} alt="sample" />
+            <Group>
+                <ProfilePic src={Props.src} width="50px" />
+                <Container>
+                    <Typography sx={{ fontWeight: 'bold', fontSize: '16pt', m:0}}>
+                        {Props.name}
+                    </Typography>
+                    <Typography sx={{ fontWeight: 'medium', fontSize: '10pt', m:0}}>
+                        {Props.price}
+                    </Typography>
+                </Container>
+            </Group>
+        </AssestBlock>
+    )
+}
+
+// Search
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: "8px",
@@ -39,7 +103,6 @@ const Search = styled('div')(({ theme }) => ({
         width: 'auto',
     },
 }));
-
 const SearchIconWrapper = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 2),
     height: '100%',
@@ -49,7 +112,6 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
 }));
-
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: '#B4B4B4',
     '& .MuiInputBase-input': {
@@ -68,7 +130,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         // },
     },
 }));
-
 const ShortcutSymbol = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 2),
     height: '100%',
@@ -80,20 +141,6 @@ const ShortcutSymbol = styled('div')(({ theme }) => ({
     backgroundColor: '#B4B4B4',
     borderRadius: "7px"
 }))
-
-// Header
-const Header = styled('div')(({ theme }) => ({
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignContent: 'center',
-    alignItems: 'center',
-    // maxWidth: '1300px',
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    height: '100px'
-}))
-
-
 export function SearchBox() {
     return (
         <Search>
@@ -109,6 +156,17 @@ export function SearchBox() {
     )
 }
 
+// Header
+const Header = styled('div')(({ theme }) => ({
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    alignItems: 'center',
+    // maxWidth: '1300px',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    height: '100px'
+}))
 export function NavBar() {
     return (
         <Container fixed>
