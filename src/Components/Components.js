@@ -2,26 +2,11 @@ import React from 'react'
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Stack, Typography } from '@mui/material';
 import logo from '../Assests/logo.png'
 import Link from '@mui/material/Link';
 
-
-
 // Main styled --------------------------------------------------------------------------------------------------------------------------------------------------
-
-// Grouping - Horizontally
-const GroupStyle = styled('div')(() => ({
-    display: 'flex',
-    alignItems: 'center'
-}))
-export function Group({ children }) {
-    return (
-        <GroupStyle>
-            {children}
-        </GroupStyle>
-    )
-}
 
 // Logo
 const LogoStyles = styled('div')(({ theme }) => ({
@@ -30,16 +15,14 @@ const LogoStyles = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     height: '50px',
-    width: '50px',
-    borderRadius: '100%',
     overflow: 'hidden'
     // backgroundColor: "red"
 }))
 export function Logo() {
     return (
         <LogoStyles>
-            <Link href='#'>
-                <img src={logo} alt='logo' width="70px"></img>
+            <Link href='/'>
+                <img src={logo} alt='logo' width="250px"></img>
             </Link>
         </LogoStyles>
     )
@@ -60,22 +43,22 @@ export function ProfilePic(props) {
 // Developer tag
 export function Devtag() {
     return (
-        <>
+        <Container fixed>
             <Box sx={{
                 width: "100%",
                 height: 2,
                 bgcolor: "#C4C4C4",
-                mt: 10
+                mt: 5
             }}></Box>
-            <Typography textAlign="center" margin="auto" fontSize="10pt" mt="20px" mb="20px">
-                Copyright 2022 | Innovation project
+            <Typography textAlign="center" margin="auto" fontSize="10pt" mt={2} mb={2}>
+                2023-COS30049-Computing Technology Innovation Project
             </Typography>
-        </>
+        </Container>
     )
 }
 
 // Link
-export function CustomLink(props) {
+export function SubLink(props) {
     const is_active = props.active;
     if (is_active) {
         return (
@@ -101,6 +84,17 @@ export function CustomLink(props) {
         )
     }
 
+}
+
+export function CustomLink(props,{children}) {
+    <Link sx={{
+        color: '#000',
+        '&: hover': {
+            color: "#0004"
+        }
+    }} underline="none" href={props.to} >
+        {children}
+    </Link>
 }
 
 
@@ -135,7 +129,7 @@ export function Assest(Props) {
     return (
         <AssestBlock>
             <AssestPhoto src={Props.src} alt="sample" />
-            <Group>
+            <Stack flexDirection="row" alignItems="center">
                 <ProfilePic src={Props.src} width="50px" />
                 <Container>
                     <Typography sx={{ fontWeight: 'bold', fontSize: '16pt', m: 0 }}>
@@ -145,7 +139,7 @@ export function Assest(Props) {
                         {Props.price}
                     </Typography>
                 </Container>
-            </Group>
+            </Stack>
         </AssestBlock>
     )
 }

@@ -1,5 +1,5 @@
-import { Container, styled } from "@mui/material"
-import { Logo, Group, SearchBox } from "./Components";
+import { Container, Stack, styled } from "@mui/material"
+import { Logo, SearchBox } from "./Components";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
@@ -11,7 +11,8 @@ const HeaderContainer = styled('div')(() => ({
     alignItems: 'center',
     marginRight: 'auto',
     marginLeft: 'auto',
-    height: '100px'
+    height: '100px',
+    flexWrap: "wrap"
 }))
 
 export function Header() {
@@ -19,10 +20,10 @@ export function Header() {
         <Container fixed>
             <HeaderContainer>
                 <Logo/>
-                <Group>
+                <Stack flexDirection="row" p={1}>
                     <SearchBox />
                     <AccountCircleIcon fontSize='large' />
-                </Group>
+                </Stack>
             </HeaderContainer>
         </Container>
     )
