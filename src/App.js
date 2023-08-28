@@ -8,7 +8,9 @@ import {
 
 import Profile from './Pages/Profile';
 import Landing, { Art, Gaming, Photography } from './Pages/Landing';
+import AssestOverView from './Pages/AssestOverview';
 
+import Sample from './Assests/AssestPhotoSample.jpg'
 
 export default function App() {
   return (
@@ -21,6 +23,7 @@ export default function App() {
         </Route>
         <Route exact path='/profile' element={<Profile />} >
         </Route>
+        <Route path='/artsample' element={<AssestOverView src={Sample} name="Art123" own="#User123" type="gaming" price="0.00456ETH"/>} />
       </Routes>
     </Router>
 

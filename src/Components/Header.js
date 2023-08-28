@@ -20,7 +20,7 @@ export function Header() {
         <Container fixed>
             <HeaderContainer>
                 <Logo/>
-                <Stack flexDirection="row" p={1}>
+                <Stack flexDirection="row">
                     <SearchBox />
                     <AccountCircleIcon fontSize='large' />
                 </Stack>

@@ -2,7 +2,7 @@ import { Container, Stack, Typography } from '@mui/material';
 import React from 'react';
 import Sample from '../Assests/AssestPhotoSample.jpg'
 
-import { SubLink, Assest } from '../Components/Components';
+import { SubLink, Assest, CustomLink } from '../Components/Components';
 
 import {
   Route,
@@ -68,7 +68,7 @@ export default function Landing() {
 export function All() {
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
-      <Assest src={Sample} name="Art name" price="0.0001ETH" />
+      <CustomLink element={<Assest src={Sample} name="Art" price="0.0001ETH" />} to="/artsample"/>
       <Assest src={Sample} name="Art name" price="0.0001ETH" />
       <Assest src={Sample} name="Art name" price="0.0001ETH" />
       <Assest src={Sample} name="Art name" price="0.0001ETH" />

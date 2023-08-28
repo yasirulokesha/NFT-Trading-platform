@@ -10,19 +10,17 @@ import Link from '@mui/material/Link';
 
 // Logo
 const LogoStyles = styled('div')(({ theme }) => ({
-    padding: theme.spacing(1),
+    // padding: theme.spacing(1),
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    height: '50px',
-    overflow: 'hidden'
-    // backgroundColor: "red"
+    justifyContent: 'flex-start',
+    
 }))
 export function Logo() {
     return (
         <LogoStyles>
             <Link href='/'>
-                <img src={logo} alt='logo' width="250px"></img>
+                <img src={logo} alt='logo' width="230px"></img>
             </Link>
         </LogoStyles>
     )
@@ -86,15 +84,12 @@ export function SubLink(props) {
 
 }
 
-export function CustomLink(props,{children}) {
-    <Link sx={{
-        color: '#000',
-        '&: hover': {
-            color: "#0004"
-        }
-    }} underline="none" href={props.to} >
-        {children}
-    </Link>
+export function CustomLink(props) {
+    return (
+        <Link sx={{ color: '#000' }} href={props.to} underline="none"  >
+            {props.element}
+        </Link>
+    )
 }
 
 
@@ -156,11 +151,7 @@ const Search = styled('div')(({ theme }) => ({
     marginRight: 20,
     width: '100%',
     height: '39px',
-    maxWidth: '600px',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(1),
-        width: 'auto',
-    },
+    maxWidth: '600px'
 }));
 const SearchIconWrapper = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 2),

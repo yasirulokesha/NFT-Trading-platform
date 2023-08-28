@@ -4,18 +4,18 @@ import { Logo } from "./Components"
 
 // Header
 const FooterStyles = styled('footer')(() => ({
-    display: 'flex',
     backgroundColor: "#D9D9D9",
-    width: "100%"
+    width: "100%",
+    marginTop: 100
 }))
 
 export function Footer() {
     return (
         <FooterStyles>
-            <Container>
+            <Container fixed>
                 <Grid container pt={10} pb={10} >
-                    <Grid xs={4} item>
-                        <Logo/>
+                    <Grid md={5} sm={12} item >
+                        <Logo />
                     </Grid>
                     <Grid xs={7} item>
                         <Stack direction="row" useFlexGap flexWrap="wrap" spacing={20}>
