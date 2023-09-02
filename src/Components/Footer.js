@@ -1,4 +1,4 @@
-import { Container, Grid, Stack, Typography, styled } from "@mui/material"
+import { Container, Grid, Link, Stack, Typography, styled } from "@mui/material"
 import { Logo } from "./Components"
 
 
@@ -27,9 +27,9 @@ export function Footer() {
                             <Stack>
                                 <Typography pb={1} fontWeight={700}>Profile</Typography>
                                 <Typography>Register</Typography>
-                                <Typography>Login</Typography>
+                                <Typography component={Link} color="#000" underline="none" href="/login">Login</Typography>
                                 <Typography>F&Q</Typography>
-                                <Typography>Profile</Typography>
+                                <Typography component={Link} color="#000" underline="none" href="/login">Profile</Typography>
                             </Stack>
                             <Stack>
                                 <Typography pb={1} fontWeight={700}>Learn</Typography>
@@ -39,10 +39,10 @@ export function Footer() {
                             </Stack>
                             <Stack>
                                 <Typography pb={1} fontWeight={700}>Market</Typography>
-                                <Typography>All</Typography>
-                                <Typography>Gaming</Typography>
-                                <Typography>Art</Typography>
-                                <Typography>Photography</Typography>
+                                <Typography component={Link} color="#000" underline="none" href="/">All</Typography>
+                                <Typography component={Link} color="#000" underline="none" href="/gaming">Gaming</Typography>
+                                <Typography component={Link} color="#000" underline="none" href="/art">Art</Typography>
+                                <Typography component={Link} color="#000" underline="none" href="/photography">Photography</Typography>
                             </Stack>
                         </Stack>
                     </Grid>

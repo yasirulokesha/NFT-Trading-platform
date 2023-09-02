@@ -1,8 +1,11 @@
 import styled from '@emotion/styled'
-import { Button, Container, Grid, Stack, Typography } from '@mui/material'
+import { Box, Button, Container, Grid, Modal, Stack, Typography } from '@mui/material'
 import React from 'react'
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Wallet } from './Profile';
+import { WalletRounded } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const ArtWrap = styled('img')(() => ({
     width: "100%",
@@ -13,14 +16,29 @@ const ArtWrap = styled('img')(() => ({
     padding: 10
 }))
 
-const AssestContainer = styled('div')(({theme})=>({
+const ModalBox = styled(Box)(() => ({
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '100%',
+    maxWidth: 690,
+    minHeight: 500,
+    backgroundColor: '#FFF',
+    boxShadow: 24,
+    borderRadius: 13,
+    padding: 12,
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    flexDirection: 'column',
+    alignItems: 'center'
 }))
 
-// [theme.breakpoints.down('sm')]: {
-//     backgroundColor: theme.palette.secondary.main,
-// },
-
 export default function AssestOverView(props) {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     return (
         <Container fixed >
             <Grid container>
@@ -49,9 +67,33 @@ export default function AssestOverView(props) {
                                 '&: hover': {
                                     backgroundColor: '#52C1FF'
                                 }
-                            }} variant="contained" endIcon={<ShoppingCartIcon />}>
+                            }} variant="contained" onClick={handleOpen} endIcon={<ShoppingCartIcon />}>
                                 Buy Now
                             </Button>
+                            <Modal
+                                open={open}
+                                onClose={handleClose}
+                            >
+                                <ModalBox>
+                                    <Wallet />
+                                    <Typography mt={3} variant='h6'>Price</Typography>
+                                    <Typography >{props.price}</Typography>
+                                    <Button fontWeight={700} sx={{
+                                        backgroundColor: '#ff4848',
+                                        height: '50px',
+                                        borderRadius: 2,
+                                        textTransform: 'none',
+                                        fontSize: 18,
+                                        marginTop: 3,
+                                        marginBottom: 3,
+                                        '&: hover': {
+                                            backgroundColor: '#9d0000'
+                                        }
+                                    }} variant="contained" component={Link} to="/profile/activity" endIcon={<WalletRounded />}>
+                                        Checkout
+                                    </Button>
+                                </ModalBox>
+                            </Modal>
                         </Stack>
                     </Grid>
                 </Stack>

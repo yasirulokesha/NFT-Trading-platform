@@ -1,4 +1,4 @@
-import { Container, Stack, styled } from "@mui/material"
+import { Container, Link, Stack, styled } from "@mui/material"
 import { Logo, SearchBox } from "./Components";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
@@ -19,10 +19,12 @@ export function Header() {
     return (
         <Container fixed>
             <HeaderContainer>
-                <Logo/>
+                <Logo /> 
                 <Stack flexDirection="row">
                     <SearchBox />
-                    <AccountCircleIcon fontSize='large' />
+                    <Link color='#000' href='/profile'>
+                        <AccountCircleIcon fontSize='large' />
+                    </Link>
                 </Stack>
             </HeaderContainer>
         </Container>

@@ -5,6 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Box, Container, Stack, Typography } from '@mui/material';
 import logo from '../Assests/logo.png'
 import Link from '@mui/material/Link';
+import WalletCard from '../Assests/walletCard.webp'
 
 // Main styled --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +15,7 @@ const LogoStyles = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    
+
 }))
 export function Logo() {
     return (
@@ -23,18 +24,6 @@ export function Logo() {
                 <img src={logo} alt='logo' width="230px"></img>
             </Link>
         </LogoStyles>
-    )
-}
-
-// Profile
-const ProfPicStyles = styled("img")(() => ({
-    borderRadius: '100%',
-    backgroundColor: "#B5B5B5",
-    margin: 10
-}))
-export function ProfilePic(props) {
-    return (
-        <ProfPicStyles src={props.src} alt='Profile picture' width={props.width} />
     )
 }
 
@@ -55,43 +44,46 @@ export function Devtag() {
     )
 }
 
-// Link
-export function SubLink(props) {
-    const is_active = props.active;
-    if (is_active) {
-        return (
-            <Link sx={{
-                color: '#00aaff',
-                '&: hover': {
-                    color: "#0004"
-                }
-            }} underline="none" href={props.to} >
-                <Typography m="10px" variant='h6' >{props.placeholder}</Typography>
-            </Link>
-        )
-    } else {
-        return (
-            <Link sx={{
-                color: '#000',
-                '&: hover': {
-                    color: "#0004"
-                }
-            }} underline="none" href={props.to} >
-                <Typography m="10px" variant='h6' >{props.placeholder}</Typography>
-            </Link>
-        )
+// Wallet Preview
+const WalletWrap = styled('div')(({ theme }) => ({
+    width: 600,
+    [theme.breakpoints.down('sm')]: {
+        width: '100%'
     }
-
-}
-
-export function CustomLink(props) {
+}))
+const WalletNumber = styled(Typography)(({ theme }) => ({
+    position: 'absolute',
+    marginTop: 64,
+    marginLeft: 41.3,
+    color: '#FFF',
+    fontWeight: 700,
+    [theme.breakpoints.down('sm')]: {
+        marginTop: '10%',
+        marginLeft: '6%',
+        fontSize: 10
+    }
+}))
+const Balance = styled(Typography)(({ theme }) => ({
+    position: 'absolute',
+    marginTop: -59,
+    marginLeft: 91.3,
+    color: '#FFF',
+    fontWeight: 700,
+    [theme.breakpoints.down('sm')]: {
+        marginTop: '-8.5%',
+        marginLeft: '13.7%',
+        fontSize: 10
+    }
+}))
+export function WalletPreview(props) {
     return (
-        <Link sx={{ color: '#000' }} href={props.to} underline="none"  >
-            {props.element}
-        </Link>
+        <WalletWrap>
+            <WalletNumber>{props.wallet}</WalletNumber>
+            <img width="100%" alt='WalletBack' src={WalletCard} />
+            <Balance>{props.balance}ETH</Balance>
+        </WalletWrap>
     )
-}
-
+} 
 
 // Components --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -125,7 +117,6 @@ export function Assest(Props) {
         <AssestBlock>
             <AssestPhoto src={Props.src} alt="sample" />
             <Stack flexDirection="row" alignItems="center">
-                <ProfilePic src={Props.src} width="50px" />
                 <Container>
                     <Typography sx={{ fontWeight: 'bold', fontSize: '16pt', m: 0 }}>
                         {Props.name}
@@ -188,5 +179,42 @@ export function SearchBox() {
                 inputProps={{ 'aria-label': 'search' }}
             />
         </Search>
+    )
+}
+
+// Link styles
+export function SubLink(props) {
+    const is_active = props.active;
+    if (is_active) {
+        return (
+            <Link sx={{
+                color: '#00aaff',
+                '&: hover': {
+                    color: "#0004"
+                }
+            }} underline="none" href={props.to} >
+                <Typography m="10px" variant='h6' >{props.placeholder}</Typography>
+            </Link>
+        )
+    } else {
+        return (
+            <Link sx={{
+                color: '#000',
+                '&: hover': {
+                    color: "#0004"
+                }
+            }} underline="none" href={props.to} >
+                <Typography m="10px" variant='h6' >{props.placeholder}</Typography>
+            </Link>
+        )
+    }
+
+}
+
+export function CustomLink(props) {
+    return (
+        <Link sx={{ color: '#000' }} href={props.to} underline="none"  >
+            {props.element}
+        </Link>
     )
 }
