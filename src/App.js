@@ -7,10 +7,9 @@ import {
 } from "react-router-dom";
 
 import Profile from './Pages/Profile';
-import Landing from './Pages/Landing';
+import Landing, { Assests } from './Pages/Landing';
 import AssestOverView from './Pages/AssestOverview';
 
-import Sample from './Assests/AssestPhotoSample.jpg'
 import Login from './Pages/Login';
 
 export default function App() {
@@ -26,8 +25,10 @@ export default function App() {
           <Route path='/profile/feed' element={<Profile />}></Route>
           <Route path='/profile/activity' element={<Profile />}></Route>
         </Route>
-        <Route path='/artsample' element={<AssestOverView src={Sample} name="Art123" own="#User123" type="gaming" price="0.00456ETH" />} />
-        <Route exact path='/login' element={<Login/>}></Route>
+        {Assests.map((assest) => (
+          <Route path={assest.name} element={<AssestOverView src={assest.src} name={assest.name} own="#User123" type={assest.category} price={assest.price} />} />
+        ))}
+        <Route exact path='/login' element={<Login />}></Route>
       </Routes>
     </Router>
 

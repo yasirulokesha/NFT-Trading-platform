@@ -52,7 +52,7 @@ export default function AssestOverView(props) {
                             <Typography fontWeight={400} variant='body1'>Owned by {props.own}</Typography>
                             <Stack flexDirection='row' alignItems='center' mt={2} mb={2}>
                                 <BookmarkIcon />
-                                <Typography fontWeight={400} variant='body1'>{props.type}</Typography>
+                                <Typography fontWeight={500} variant='body1' textTransform='uppercase'>{props.type}</Typography>
                             </Stack>
                             <Stack flexDirection='column' alignItems='left' mt={2} mb={2}>
                                 <Typography fontWeight={400} variant='body1'>Price</Typography>

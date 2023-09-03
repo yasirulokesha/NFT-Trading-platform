@@ -19,11 +19,30 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Assest, CustomLink, SubLink, WalletPreview } from '../Components/Components';
 
-import Sample from '../Assests/AssestPhotoSample.jpg'
 import { Upload } from '@mui/icons-material';
 
 import StartIcon from '@mui/icons-material/Start';
 import VerticalAlignTopIcon from '@mui/icons-material/VerticalAlignTop';
+
+import Sample1 from '../Assests/NFTs/NFT00001.jpg'
+import Sample2 from '../Assests/NFTs/NFT00002.jpg'
+import Sample3 from '../Assests/NFTs/NFT00003.jpg'
+import Sample8 from '../Assests/NFTs/NFT00008.jpg'
+import Sample11 from '../Assests/NFTs/NFT00011.jpg'
+import Sample12 from '../Assests/NFTs/NFT00012.jpg'
+
+function createNFTData(category, src, name, price) {
+    return { category, src, name, price };
+}
+
+const PrivateAssests = [
+    createNFTData('gaming', Sample1, 'Monkey Dory', '0.121ETH'),
+    createNFTData('art', Sample2, 'Angry Monkey', '0.156ETH'),
+    createNFTData('photography', Sample3, 'Gentle gamer', '0.237ETH'),
+    createNFTData('art', Sample8, 'Super Joke', '0.311ETH'),
+    createNFTData('photography', Sample11, 'Sun Flower', '0.698ETH'),
+    createNFTData('gaming', Sample12, 'Mixed Colours', '0.124ETH'),
+]
 
 const ProfilePhotoWrap = styled('img')(() => ({
     width: 150,
@@ -59,6 +78,8 @@ const DetailsContainer = styled(Container)(({ theme }) => ({
         marginTop: 50
     }
 }))
+
+
 
 
 
@@ -153,10 +174,10 @@ function IconIndicate(props) {
 
 const rows = [
     createData('in', 'Heroes of Parallel', 159, 6.0, 24, 4.0),
-    createData('Winesed Elder', 237, 9.0, 37, 4.3),
-    createData('Heroes of Parallel', 262, 16.0, 24, 6.0),
-    createData('Test NFT ', 305, 3.7, 67, 4.3),
-    createData('Heroes of Parallel', 356, 16.0, 49, 3.9),
+    createData('out', 'Winesed Elder', 237, 9.0, 37, 4.3),
+    createData('out', 'Heroes of Parallel', 262, 16.0, 24, 6.0),
+    createData('out', 'Test NFT ', 305, 3.7, 67, 4.3),
+    createData('out', 'Heroes of Parallel', 356, 16.0, 49, 3.9),
 ];
 
 export function Activity() {
@@ -214,10 +235,9 @@ export function Feed() {
                 Upload Assest
             </Button>
             <Stack flexWrap='wrap' flexDirection='row'>
-                <CustomLink element={<Assest src={Sample} name="Art" price="0.0001ETH" />} to="/artsample" />
-                <CustomLink element={<Assest src={Sample} name="Art" price="0.0001ETH" />} to="/artsample" />
-                <CustomLink element={<Assest src={Sample} name="Art" price="0.0001ETH" />} to="/artsample" />
-                <CustomLink element={<Assest src={Sample} name="Art" price="0.0001ETH" />} to="/artsample" />
+                {PrivateAssests.map((assest) => (
+                    <CustomLink element={<Assest src={assest.src} name={assest.name} price={assest.price} />} to={`/` + assest.name} />
+                ))}
             </Stack>
         </div>
     )
