@@ -5,6 +5,7 @@ import WalletPrev from '../Assests/walletprev.webp';
 import TextField from '@mui/material/TextField';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
+// Login form styles
 const LoginWrap = styled(Paper)(({ theme }) => ({
     borderRadius: 20,
     width: '100%',
@@ -18,6 +19,8 @@ const LoginWrap = styled(Paper)(({ theme }) => ({
     flexDirection: 'column',
     flexWrap: 'nowrap',
 }))
+
+// Export the login UI 
 export default function Login() {
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -54,7 +57,6 @@ export default function Login() {
                         sx={{
                             margin: 2
                         }}
-                        // id="outlined-adornment-password"
                         type={showPassword ? 'text' : 'password'}
                         endAdornment={
                             <InputAdornment position="end">
@@ -69,7 +71,7 @@ export default function Login() {
                             </InputAdornment>
                         }
                     />
-                    <Button sx={{width: 'min-content', marginTop: 2, marginBottom: 6, marginLeft: 2 }} variant="outlined" href="#outlined-buttons">
+                    <Button sx={{width: 'min-content', marginTop: 2, marginBottom: 6, marginLeft: 2 }} variant="outlined" href="/profile">
                         Login
                     </Button>
                 </Stack>

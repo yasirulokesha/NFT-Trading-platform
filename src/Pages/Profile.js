@@ -31,10 +31,11 @@ import Sample8 from '../Assests/NFTs/NFT00008.jpg'
 import Sample11 from '../Assests/NFTs/NFT00011.jpg'
 import Sample12 from '../Assests/NFTs/NFT00012.jpg'
 
+// Create NFT data sets from array
 function createNFTData(category, src, name, price) {
     return { category, src, name, price };
 }
-
+// NFT details array
 const PrivateAssests = [
     createNFTData('gaming', Sample1, 'Monkey Dory', '0.121ETH'),
     createNFTData('art', Sample2, 'Angry Monkey', '0.156ETH'),
@@ -44,6 +45,7 @@ const PrivateAssests = [
     createNFTData('gaming', Sample12, 'Mixed Colours', '0.124ETH'),
 ]
 
+// Profile photo wraping styles
 const ProfilePhotoWrap = styled('img')(() => ({
     width: 150,
     height: 150,
@@ -54,6 +56,7 @@ const ProfilePhotoWrap = styled('img')(() => ({
     borderStyle: 'solid'
 }))
 
+// Cover photo wraping styles
 const CustomizedPaper = styled(Paper)(({ theme }) => ({
     borderRadius: 15,
     height: 300,
@@ -68,6 +71,7 @@ const CustomizedPaper = styled(Paper)(({ theme }) => ({
     }
 }))
 
+// Details container styles
 const DetailsContainer = styled(Container)(({ theme }) => ({
     marginTop: -60,
     width: 'fit-content',
@@ -79,12 +83,8 @@ const DetailsContainer = styled(Container)(({ theme }) => ({
     }
 }))
 
-
-
-
-
+// Building the profile and export
 export default function Profile() {
-
     return (
         <Container fixed>
             <CustomizedPaper elevation="24">
@@ -98,7 +98,7 @@ export default function Profile() {
                 <DetailsContainer>
                     <ProfilePhotoWrap src={ProfileImage} alt='Prifile picture' />
                     <Typography fontWeight={700} variant='h4'>Username</Typography>
-                    <Typography fontWeight={500} variant='body1'>#11312331</Typography>
+                    <Typography fontWeight={500} variant='body1'>#13124</Typography>
                 </DetailsContainer>
             </Container>
             <Routes>
@@ -137,6 +137,7 @@ export default function Profile() {
     )
 }
 
+// Styling a cell of table
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#1a237e",
@@ -147,6 +148,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
 }));
 
+// Styling a row of table
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.action.hover,
@@ -156,10 +158,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-function createData(cat, name, calories, fat, carbs, protein) {
-    return { cat, name, calories, fat, carbs, protein };
+// Create data set for activity table
+function createData(cat, name, price, qty, from, to) {
+    return { cat, name, price, qty, from, to };
 }
 
+// Icon usage for indicate the Incoming and Outgoing transactions
 function IconIndicate(props) {
     if (props.status === 'in') {
         return (
@@ -172,14 +176,16 @@ function IconIndicate(props) {
     }
 }
 
+// Data array for the activity table
 const rows = [
-    createData('in', 'Heroes of Parallel', 159, 6.0, 24, 4.0),
-    createData('out', 'Winesed Elder', 237, 9.0, 37, 4.3),
-    createData('out', 'Heroes of Parallel', 262, 16.0, 24, 6.0),
-    createData('out', 'Test NFT ', 305, 3.7, 67, 4.3),
-    createData('out', 'Heroes of Parallel', 356, 16.0, 49, 3.9),
+    createData('in', 'Monkey Dory', '0.121ETH', 1, '#13121', '#13124'),
+    createData('out', 'Angry Monkey', '0.156ETH', 2, '#13124', '#13120'),
+    createData('in', 'Gentle gamer', '0.237ETH', 5, '#13123', '#13124'),
+    createData('in', 'Funky dirt ', '0.456ETH', 10, '#13127', '#13124'),
+    createData('out', 'Hounerable', '0.212ETH', 3.0, '#13124', '#13121'),
 ];
 
+// Building & exporting the Activity Table
 export function Activity() {
     return (
         <div>
@@ -204,10 +210,10 @@ export function Activity() {
                                 <StyledTableCell component="th" scope="row">
                                     {row.name}
                                 </StyledTableCell>
-                                <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                                <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                                <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                                <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                                <StyledTableCell align="right">{row.price}</StyledTableCell>
+                                <StyledTableCell align="right">{row.qty}</StyledTableCell>
+                                <StyledTableCell align="right">{row.from}</StyledTableCell>
+                                <StyledTableCell align="right">{row.to}</StyledTableCell>
                             </StyledTableRow>
                         ))}
                     </TableBody>
@@ -217,6 +223,7 @@ export function Activity() {
     )
 }
 
+// Export the NFTs gallery
 export function Feed() {
     return (
         <div>
@@ -242,6 +249,8 @@ export function Feed() {
         </div>
     )
 }
+
+// Export the Wallet of the profile
 export function Wallet() {
     return (
         <Container sx={{

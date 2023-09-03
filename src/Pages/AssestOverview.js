@@ -7,6 +7,7 @@ import { Wallet } from './Profile';
 import { WalletRounded } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
+// NFT overview card styles
 const ArtWrap = styled('img')(() => ({
     width: "100%",
     borderRadius: 30,
@@ -16,6 +17,7 @@ const ArtWrap = styled('img')(() => ({
     padding: 10
 }))
 
+// Styling the purchasing dialog
 const ModalBox = styled(Box)(() => ({
     position: 'absolute',
     top: '50%',
@@ -34,6 +36,7 @@ const ModalBox = styled(Box)(() => ({
     alignItems: 'center'
 }))
 
+// Export a assest overview and details 
 export default function AssestOverView(props) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);

@@ -21,16 +21,19 @@ import Sample10 from '../Assests/NFTs/NFT00010.jpg'
 import Sample11 from '../Assests/NFTs/NFT00011.jpg'
 import Sample12 from '../Assests/NFTs/NFT00012.jpg'
 
+
+// Create data set for the NFTs
 function createData(category, src, name, price) {
   return { category, src, name, price };
 }
 
+// NFT data array
 export const Assests = [
   createData('gaming', Sample1, 'Monkey Dory', '0.121ETH'),
   createData('art', Sample2, 'Angry Monkey', '0.156ETH'),
   createData('photography', Sample3, 'Gentle gamer', '0.237ETH'),
-  createData('art', Sample4, 'Fnky dirt', '0.456ETH'),
-  createData('art', Sample5, 'Honerable', '0.135ETH'),
+  createData('art', Sample4, 'Funky dirt', '0.456ETH'),
+  createData('art', Sample5, 'Hounerable', '0.135ETH'),
   createData('gaming', Sample6, 'Thug Life', '0.232ETH'),
   createData('photography', Sample7, 'Rapper', '0.110ETH'),
   createData('art', Sample8, 'Super Joke', '0.311ETH'),
@@ -40,10 +43,12 @@ export const Assests = [
   createData('gaming', Sample12, 'Mixed Colours', '0.124ETH'),
 ]
 
+// Export the Landing page
 export default function Landing() {
   return (
     <Container fixed>
       <Typography m="10px" variant='h5'>Explore</Typography>
+      {/* Create routes for filtering purposes */}
       <Routes>
         <Route index element={
           <div>
@@ -95,6 +100,7 @@ export default function Landing() {
   )
 }
 
+// Export the all NFT assests into the gallery
 export function All() {
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
@@ -105,6 +111,7 @@ export function All() {
   )
 }
 
+// Export the gaming NFTs for the gallery
 export function Gaming() {
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
@@ -122,6 +129,7 @@ export function Gaming() {
   )
 }
 
+// Export the art NFTs for the gallery
 export function Art() {
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
@@ -139,6 +147,7 @@ export function Art() {
   )
 }
 
+// Export the photography NFTs for the gallery
 export function Photography() {
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
