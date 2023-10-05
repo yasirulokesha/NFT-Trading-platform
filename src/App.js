@@ -12,6 +12,8 @@ import AssestOverView from './Pages/AssestOverview';
 
 import Login from './Pages/Login';
 
+import {RequireToken} from './Auth'
+
 export default function App() {
   return (
     <Router>

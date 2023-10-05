@@ -24,9 +24,6 @@ export function Header() {
                     <Link color='#000' href='/profile'>
                         <AccountCircleIcon fontSize='large' />
                     </Link>
-                    <Button fontWeight={700} LinkComponent="a" href="/login" size="small" ml={2} variant="contained">
-                        Login
-                    </Button>
                 </Stack>
             </HeaderContainer>
         </Container>

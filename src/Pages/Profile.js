@@ -30,6 +30,7 @@ import Sample3 from '../Assests/NFTs/NFT00003.jpg'
 import Sample8 from '../Assests/NFTs/NFT00008.jpg'
 import Sample11 from '../Assests/NFTs/NFT00011.jpg'
 import Sample12 from '../Assests/NFTs/NFT00012.jpg'
+import { RequireToken } from '../Auth';
 
 // Create NFT data sets from array
 function createNFTData(category, src, name, price) {
@@ -86,54 +87,56 @@ const DetailsContainer = styled(Container)(({ theme }) => ({
 // Building the profile and export
 export default function Profile() {
     return (
-        <Container fixed>
-            <CustomizedPaper elevation="24">
-                <img src={Cover} width='100%' alt='Cover' />
-            </CustomizedPaper>
-            <Container sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                width: '100%'
-            }} fixed >
-                <DetailsContainer>
-                    <ProfilePhotoWrap src={ProfileImage} alt='Prifile picture' />
-                    <Typography fontWeight={700} variant='h4'>Username</Typography>
-                    <Typography fontWeight={500} variant='body1'>#13124</Typography>
-                </DetailsContainer>
-            </Container>
-            <Routes>
-                <Route path='/' element={
-                    <div>
-                        <Stack flexWrap="wrap" direction="row" mb="10px">
-                            <SubLink active={true} to="/profile/" placeholder="Wallet" />
-                            <SubLink to="/profile/feed" placeholder="Collection" />
-                            <SubLink to="/profile/activity" placeholder="Activity" />
-                        </Stack>
-                        <Wallet />
-                    </div>
-                } />
-                <Route exact path='/feed' element={
-                    <div>
-                        <Stack flexWrap="wrap" direction="row" mb="10px">
-                            <SubLink to="/profile/" placeholder="Wallet" />
-                            <SubLink active={true} to="/profile/feed" placeholder="Collection" />
-                            <SubLink to="/profile/activity" placeholder="Activity" />
-                        </Stack>
-                        <Feed />
-                    </div>
-                } />
-                <Route exact path='/activity' element={
-                    <div>
-                        <Stack flexWrap="wrap" direction="row" mb="10px">
-                            <SubLink to="/profile/" placeholder="Wallet" />
-                            <SubLink to="/profile/feed" placeholder="Collection" />
-                            <SubLink active={true} to="/profile/activity" placeholder="Activity" />
-                        </Stack>
-                        <Activity />
-                    </div>
-                } />
-            </Routes>
-        </Container >
+        <RequireToken>
+            <Container fixed>
+                <CustomizedPaper elevation="24">
+                    <img src={Cover} width='100%' alt='Cover' />
+                </CustomizedPaper>
+                <Container sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    width: '100%'
+                }} fixed >
+                    <DetailsContainer>
+                        <ProfilePhotoWrap src={ProfileImage} alt='Prifile picture' />
+                        <Typography fontWeight={700} variant='h4'>Username</Typography>
+                        <Typography fontWeight={500} variant='body1'>#13124</Typography>
+                    </DetailsContainer>
+                </Container>
+                <Routes>
+                    <Route path='/' element={
+                        <div>
+                            <Stack flexWrap="wrap" direction="row" mb="10px">
+                                <SubLink active={true} to="/profile/" placeholder="Wallet" />
+                                <SubLink to="/profile/feed" placeholder="Collection" />
+                                <SubLink to="/profile/activity" placeholder="Activity" />
+                            </Stack>
+                            <Wallet />
+                        </div>
+                    } />
+                    <Route exact path='/feed' element={
+                        <div>
+                            <Stack flexWrap="wrap" direction="row" mb="10px">
+                                <SubLink to="/profile/" placeholder="Wallet" />
+                                <SubLink active={true} to="/profile/feed" placeholder="Collection" />
+                                <SubLink to="/profile/activity" placeholder="Activity" />
+                            </Stack>
+                            <Feed />
+                        </div>
+                    } />
+                    <Route exact path='/activity' element={
+                        <div>
+                            <Stack flexWrap="wrap" direction="row" mb="10px">
+                                <SubLink to="/profile/" placeholder="Wallet" />
+                                <SubLink to="/profile/feed" placeholder="Collection" />
+                                <SubLink active={true} to="/profile/activity" placeholder="Activity" />
+                            </Stack>
+                            <Activity />
+                        </div>
+                    } />
+                </Routes>
+            </Container >
+        </RequireToken>
     )
 }
 
