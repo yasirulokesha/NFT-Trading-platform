@@ -59,6 +59,7 @@ export default function Login() {
                     console.log(response.data.token, "response.data.token");
                     if (response.data.token) {
                         setToken(response.data.token);
+                        localStorage.setItem("username", username);
                         navigate("/profile");
                     }
                 })

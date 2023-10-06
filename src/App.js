@@ -11,6 +11,7 @@ import Landing, { Assests } from './Pages/Landing';
 import AssestOverView from './Pages/AssestOverview';
 
 import Login from './Pages/Login';
+import NFT from './nftdata';
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
           <Route path={assest.name} element={<AssestOverView src={assest.src} name={assest.name} own="#User123" type={assest.category} price={assest.price} />} />
         ))}
         <Route exact path='/login' element={<Login />}></Route>
+        <Route exact path='/nftdata' element={<NFT />}></Route>
       </Routes>
     </Router>
 

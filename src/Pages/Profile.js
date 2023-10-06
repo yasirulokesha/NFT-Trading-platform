@@ -91,7 +91,7 @@ export default function Profile() {
     const navigate = useNavigate();
 
     const signOut = () => {
-        localStorage.removeItem("temitope");
+        localStorage.removeItem("password_token");
         navigate("/");
     };
 
@@ -253,19 +253,14 @@ export function Feed() {
     return (
         <div>
             <Button fontWeight={700} sx={{
-                backgroundColor: '#ff4848',
-                height: '50px',
                 borderRadius: 2,
                 textTransform: 'none',
-                fontSize: 18,
                 marginTop: 3,
-                marginBottom: 3,
-                '&: hover': {
-                    backgroundColor: '#9d0000'
-                }
+                marginBottom: 3
             }} variant="contained" endIcon={<Upload />}>
                 Upload Assest
             </Button>
+
             <Stack flexWrap='wrap' flexDirection='row'>
                 {PrivateAssests.map((assest) => (
                     <CustomLink element={<Assest src={assest.src} name={assest.name} price={assest.price} />} to={`/` + assest.name} />
