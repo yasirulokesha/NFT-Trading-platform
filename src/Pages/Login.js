@@ -3,8 +3,13 @@ import { Button, Container, IconButton, InputAdornment, OutlinedInput, Paper, St
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+
 import { useNavigate } from 'react-router-dom';
-import { fetchToken } from '../Auth';
+import { fetchToken, setToken } from '../Auth';
+import axios from 'axios';
+
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 // Login form styles
 const LoginWrap = styled(Paper)(({ theme }) => ({
@@ -21,6 +26,10 @@ const LoginWrap = styled(Paper)(({ theme }) => ({
     flexWrap: 'nowrap',
 }))
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 // Export the login UI 
 export default function Login() {
 
@@ -28,15 +37,36 @@ export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const [error_msg, setError_msg] = useState('')
+    const [error, setError] = useState(false)
+
     // Forward in successfull
     const navigate = useNavigate();
 
     // Checking filled password and username
-    const login = () => {
+    const login = (e) => {
+        e.preventDefault();
         if ((username === "") && (password === "")) {
-            return;
+            setError_msg("Fill the username and password")
+            setError(true)
         } else {
-            <p>hi</p>
+            axios
+                .post("http://localhost:8000/login", {
+                    username: username,
+                    password: password,
+                })
+                .then((response) => {
+                    console.log(response.data.token, "response.data.token");
+                    if (response.data.token) {
+                        setToken(response.data.token);
+                        navigate("/profile");
+                    }
+                })
+                .catch((error) => {
+                    console.log(error, "error")
+                    setError_msg("Invalid username or password")
+                    setError(true)
+                });
         }
     }
 
@@ -93,6 +123,11 @@ export default function Login() {
                             }
                             onChange={(e) => setPassword(e.target.value)}
                         />
+                        <Snackbar open={error} autoHideDuration={6000} >
+                            <Alert severity="error" sx={{ width: '100%' }} >
+                                <Typography>{error_msg}</Typography>
+                            </Alert>
+                        </Snackbar>
                         <Button onClick={login} sx={{ width: 'min-content', marginTop: 2, marginBottom: 6, marginLeft: 2 }} variant="outlined" href="/profile">
                             Login
                         </Button>

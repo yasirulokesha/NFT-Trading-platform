@@ -30,7 +30,9 @@ import Sample3 from '../Assests/NFTs/NFT00003.jpg'
 import Sample8 from '../Assests/NFTs/NFT00008.jpg'
 import Sample11 from '../Assests/NFTs/NFT00011.jpg'
 import Sample12 from '../Assests/NFTs/NFT00012.jpg'
+
 import { RequireToken } from '../Auth';
+import { useNavigate } from 'react-router-dom';
 
 // Create NFT data sets from array
 function createNFTData(category, src, name, price) {
@@ -86,6 +88,13 @@ const DetailsContainer = styled(Container)(({ theme }) => ({
 
 // Building the profile and export
 export default function Profile() {
+    const navigate = useNavigate();
+
+    const signOut = () => {
+        localStorage.removeItem("temitope");
+        navigate("/");
+    };
+
     return (
         <RequireToken>
             <Container fixed>
@@ -101,34 +110,47 @@ export default function Profile() {
                         <ProfilePhotoWrap src={ProfileImage} alt='Prifile picture' />
                         <Typography fontWeight={700} variant='h4'>Username</Typography>
                         <Typography fontWeight={500} variant='body1'>#13124</Typography>
+                        <Button fontWeight={700} sx={{
+                            backgroundColor: '#ff4848',
+                            borderRadius: 1,
+                            textTransform: 'none',
+                            fontSize: 15,
+                            marginTop: 2,
+                            marginBottom: 2,
+                            '&: hover': {
+                                backgroundColor: '#9d0000'
+                            }
+                        }} variant="contained" onClick={signOut} >
+                            Sign Out
+                        </Button>
                     </DetailsContainer>
                 </Container>
                 <Routes>
                     <Route path='/' element={
                         <div>
                             <Stack flexWrap="wrap" direction="row" mb="10px">
-                                <SubLink active={true} to="/profile/" placeholder="Wallet" />
-                                <SubLink to="/profile/feed" placeholder="Collection" />
-                                <SubLink to="/profile/activity" placeholder="Activity" />
-                            </Stack>
-                            <Wallet />
-                        </div>
-                    } />
-                    <Route exact path='/feed' element={
-                        <div>
-                            <Stack flexWrap="wrap" direction="row" mb="10px">
-                                <SubLink to="/profile/" placeholder="Wallet" />
-                                <SubLink active={true} to="/profile/feed" placeholder="Collection" />
+                                <SubLink active={true} to="/profile/" placeholder="Feed" />
+                                <SubLink to="/profile/wallet" placeholder="Wallet" />
                                 <SubLink to="/profile/activity" placeholder="Activity" />
                             </Stack>
                             <Feed />
                         </div>
                     } />
+                    <Route exact path='/wallet' element={
+                        <div>
+                            <Stack flexWrap="wrap" direction="row" mb="10px">
+                                <SubLink to="/profile/" placeholder="Feed" />
+                                <SubLink active={true} to="/profile/wallet" placeholder="Wallet" />
+                                <SubLink to="/profile/activity" placeholder="Activity" />
+                            </Stack>
+                            <Wallet />
+                        </div>
+                    } />
                     <Route exact path='/activity' element={
                         <div>
                             <Stack flexWrap="wrap" direction="row" mb="10px">
-                                <SubLink to="/profile/" placeholder="Wallet" />
-                                <SubLink to="/profile/feed" placeholder="Collection" />
+                                <SubLink to="/profile/" placeholder="Feed" />
+                                <SubLink to="/profile/wallet" placeholder="Wallet" />
                                 <SubLink active={true} to="/profile/activity" placeholder="Activity" />
                             </Stack>
                             <Activity />

@@ -1,4 +1,4 @@
-import { Button, Container, Link, Stack, styled } from "@mui/material"
+import { Container, Link, Stack, styled } from "@mui/material"
 import { Logo, SearchBox } from "./Components";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 

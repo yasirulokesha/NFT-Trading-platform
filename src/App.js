@@ -12,8 +12,6 @@ import AssestOverView from './Pages/AssestOverview';
 
 import Login from './Pages/Login';
 
-import {RequireToken} from './Auth'
-
 export default function App() {
   return (
     <Router>
@@ -24,7 +22,7 @@ export default function App() {
           <Route path='/photography' element={<Landing />} />
         </Route>
         <Route exact path='/profile' element={<Profile />} >
-          <Route path='/profile/feed' element={<Profile />}></Route>
+          <Route path='/profile/wallet' element={<Profile />}></Route>
           <Route path='/profile/activity' element={<Profile />}></Route>
         </Route>
         {Assests.map((assest) => (
