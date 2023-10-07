@@ -1,5 +1,5 @@
 import { Button, Container, Paper, Stack, Typography } from '@mui/material';
-import React from 'react'
+import React, { useState } from 'react'
 
 import {
     Route,
@@ -33,6 +33,8 @@ import Sample12 from '../Assests/NFTs/NFT00012.jpg'
 
 import { RequireToken } from '../Auth';
 import { useNavigate } from 'react-router-dom';
+
+import axios from 'axios'
 
 // Create NFT data sets from array
 function createNFTData(category, src, name, price) {
@@ -90,10 +92,31 @@ const DetailsContainer = styled(Container)(({ theme }) => ({
 export default function Profile() {
     const navigate = useNavigate();
 
+    const [username, setUsername] = useState('')
+    const [walletAddress, setwalletAddress] = useState('')
+
+
     const signOut = () => {
         localStorage.removeItem("password_token");
+        localStorage.removeItem("username");
         navigate("/");
     };
+
+    axios
+        .post("http://127.0.0.1:8000/profile", {
+            username: localStorage.getItem("username")
+        })
+        .then((response) => {
+            console.log(response.data.results, "response.data.results");
+            if (response.data) {
+                // Set details from database
+                setUsername(response.data.username)
+                setwalletAddress(response.data.wallet)
+            }
+        })
+        .catch((error) => {
+            console.log("error")
+        });
 
     return (
         <RequireToken>
@@ -108,8 +131,8 @@ export default function Profile() {
                 }} fixed >
                     <DetailsContainer>
                         <ProfilePhotoWrap src={ProfileImage} alt='Prifile picture' />
-                        <Typography fontWeight={700} variant='h4'>Username</Typography>
-                        <Typography fontWeight={500} variant='body1'>#13124</Typography>
+                        <Typography fontWeight={700} variant='h4'>{username}</Typography>
+                        <Typography fontWeight={500} variant='body1'>#{walletAddress}</Typography>
                         <Button fontWeight={700} sx={{
                             backgroundColor: '#ff4848',
                             borderRadius: 1,

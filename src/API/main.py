@@ -46,32 +46,51 @@ async def user_login(loginitem: LoginItem):
             return {"token": encoded_jwt}
         
 
-app = FastAPI()
+# app = FastAPI()
 
 db_config = {
-    "host": "127.0.0.1:3306",
+    "host": "localhost",
     "user": "root",
-    "password": "Admin@145524",
+    "password": "12345678",
     "database": "openTrade"
 }
 
-# Establish a database connection
-connection = mysql.connector.connect(**db_config)
-# Create a cursor to execute SQL queries
-cursor = connection.cursor()
-# Define the SQL query to retrieve data (e.g., all students)
-query = "SELECT * FROM image_test"
+class CurrentUser(BaseModel):
+    username: str
 
-# Execute the SQL query
-cursor.execute(query)
+@app.post("/profile")
+async def ProfileDetails(User: CurrentUser):
+    
+    username = jsonable_encoder(User)["username"]
+    
+    # Establish a database connection
+    connection = mysql.connector.connect(**db_config)
+    
+    # Create a cursor to execute SQL queries
+    cursor = connection.cursor()
+    
+    # Define the SQL query to retrieve data (e.g., all students)
+    query = ("SELECT * FROM userProfiles WHERE username = %s")
+    
+    # Inject parameter to the query
+    ex = (username, )
+    
+    # # Execute the SQL query
+    cursor.execute(query, ex)
+    
+    results = cursor.fetchall()
+    
+     # Close the cursor and the database connection
+    cursor.close()
+    connection.close()
+    
+    return {"username" : results[0][0], "wallet": results[0][1]}
 
-# Fetch all the rows
-result = cursor.fetchall()
+    
+   
+    
+    
+    
 
-# Convert the result to a list of dictionaries
-# students = [dict(zip(cursor.column_names, row)) for row in result]
 
-# Close the cursor and the database connection
-cursor.close()
-connection.close()
 
