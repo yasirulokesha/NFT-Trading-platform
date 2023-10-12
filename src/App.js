@@ -13,6 +13,7 @@ import AssestOverView from './Pages/AssestOverview';
 import Login from './Pages/Login';
 import NFT from './nftdata';
 import AddAccount from './Pages/CreateAccount';
+import AssestUpload from './Components/UploadForm';
 
 export default function App() {
   return (
@@ -31,7 +32,7 @@ export default function App() {
           <Route path={assest.name} element={<AssestOverView src={assest.src} name={assest.name} own="#User123" type={assest.category} price={assest.price} />} />
         ))}
         <Route exact path='/login' element={<Login />}></Route>
-        <Route exact path='/nftdata' element={<NFT />}></Route>
+        <Route exact path='/upload' element={<AssestUpload />}></Route>
         <Route exact path='/register' element={<AddAccount />} />
       </Routes>
     </Router>

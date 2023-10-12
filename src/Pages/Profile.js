@@ -34,7 +34,13 @@ import Sample12 from '../Assests/NFTs/NFT00012.jpg'
 import { RequireToken } from '../Auth';
 import { useNavigate } from 'react-router-dom';
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+
 import axios from 'axios'
+import AssestUpload from '../Components/UploadForm';
 
 // Create NFT data sets from array
 function createNFTData(category, src, name, price) {
@@ -97,12 +103,22 @@ export default function Profile() {
     const [balance, setBalance] = useState()
     const [profileImg, setProfileImg] = useState("")
 
+    const [Uploadhandle, setUploadhandle] = useState(false)
+
 
     const signOut = () => {
         localStorage.removeItem("password_token");
         localStorage.removeItem("username");
         navigate("/");
     };
+
+    const OpenUploadDialog = () => {
+        setUploadhandle(true)
+    }
+
+    const CloseUploadDialog = () => {
+        setUploadhandle(false)
+    }
 
     axios
         .post("http://127.0.0.1:8000/profile", {
@@ -123,6 +139,27 @@ export default function Profile() {
 
     return (
         <RequireToken>
+            <Dialog
+                fullWidth='true'
+                maxWidth='md'
+                open={Uploadhandle}
+                onClose={CloseUploadDialog}
+                scroll='body'
+            >
+
+                <DialogTitle>Upload Your NFT Here</DialogTitle>
+                <DialogContent sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    m: 'auto',
+                    maxWidth: '500px'
+                }} >
+                    <AssestUpload />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={CloseUploadDialog}>Close</Button>
+                </DialogActions>
+            </Dialog>
             <Container fixed>
                 <CustomizedPaper elevation="24">
                     <img src={Cover} width='100%' alt='Cover' />
@@ -151,6 +188,14 @@ export default function Profile() {
                         </Button>
                     </DetailsContainer>
                 </Container>
+                <Button onClick={OpenUploadDialog} fontWeight={700} sx={{
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    marginTop: 3,
+                    marginBottom: 3
+                }} variant="contained" endIcon={<Upload />}>
+                    Upload Assest
+                </Button>
                 <Routes>
                     <Route path='/' element={
                         <div>
@@ -169,7 +214,7 @@ export default function Profile() {
                                 <SubLink active={true} to="/profile/wallet" placeholder="Wallet" />
                                 <SubLink to="/profile/activity" placeholder="Activity" />
                             </Stack>
-                            <Wallet address = {walletAddress} balance = {balance} />
+                            <Wallet address={walletAddress} balance={balance} />
                         </div>
                     } />
                     <Route exact path='/activity' element={
@@ -278,15 +323,6 @@ export function Activity() {
 export function Feed() {
     return (
         <div>
-            <Button fontWeight={700} sx={{
-                borderRadius: 2,
-                textTransform: 'none',
-                marginTop: 3,
-                marginBottom: 3
-            }} variant="contained" endIcon={<Upload />}>
-                Upload Assest
-            </Button>
-
             <Stack flexWrap='wrap' flexDirection='row'>
                 {PrivateAssests.map((assest) => (
                     <CustomLink element={<Assest src={assest.src} name={assest.name} price={assest.price} />} to={`/` + assest.name} />
