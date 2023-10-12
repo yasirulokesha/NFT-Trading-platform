@@ -94,6 +94,8 @@ export default function Profile() {
 
     const [username, setUsername] = useState('')
     const [walletAddress, setwalletAddress] = useState('')
+    const [balance, setBalance] = useState()
+    const [profileImg, setProfileImg] = useState("")
 
 
     const signOut = () => {
@@ -112,6 +114,7 @@ export default function Profile() {
                 // Set details from database
                 setUsername(response.data.username)
                 setwalletAddress(response.data.wallet)
+                setBalance(response.data.balance)
             }
         })
         .catch((error) => {
@@ -166,7 +169,7 @@ export default function Profile() {
                                 <SubLink active={true} to="/profile/wallet" placeholder="Wallet" />
                                 <SubLink to="/profile/activity" placeholder="Activity" />
                             </Stack>
-                            <Wallet />
+                            <Wallet address = {walletAddress} balance = {balance} />
                         </div>
                     } />
                     <Route exact path='/activity' element={
@@ -294,7 +297,7 @@ export function Feed() {
 }
 
 // Export the Wallet of the profile
-export function Wallet() {
+export function Wallet(props) {
     return (
         <Container sx={{
             display: 'flex',
@@ -302,7 +305,7 @@ export function Wallet() {
             width: '100%',
             marginTop: 5
         }} fixed>
-            <WalletPreview wallet="#11312331" balance="0.11111" />
+            <WalletPreview wallet={props.address} balance={props.balance} />
         </Container>
     )
 }

@@ -1,5 +1,5 @@
 import { Container, Stack, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { SubLink, Assest, CustomLink } from '../Components/Components';
 
@@ -7,6 +7,8 @@ import {
   Route,
   Routes
 } from "react-router-dom";
+
+import axios from 'axios'
 
 import Sample1 from '../Assests/NFTs/NFT00001.jpg'
 import Sample2 from '../Assests/NFTs/NFT00002.jpg'
@@ -20,7 +22,6 @@ import Sample9 from '../Assests/NFTs/NFT00009.jpg'
 import Sample10 from '../Assests/NFTs/NFT00010.jpg'
 import Sample11 from '../Assests/NFTs/NFT00011.jpg'
 import Sample12 from '../Assests/NFTs/NFT00012.jpg'
-
 
 // Create data set for the NFTs
 function createData(category, src, name, price) {
@@ -102,8 +103,18 @@ export default function Landing() {
 
 // Export the all NFT assests into the gallery
 export function All() {
+  const [data, setdata] = useState(Array())
+  axios.
+    get('http://127.0.0.1:8000/', {})
+    .then((responses) => {
+      // setdata(responses.data.files)
+      console.log(responses.data.files)
+    })
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
+      {/* {data.map((i) => {
+        <p>hi</p>
+      })} */}
       {Assests.map((assest) => (
         <CustomLink element={<Assest src={assest.src} name={assest.name} price={assest.price} />} to={`/` + assest.name} />
       ))}

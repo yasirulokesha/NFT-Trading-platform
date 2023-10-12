@@ -12,6 +12,7 @@ import AssestOverView from './Pages/AssestOverview';
 
 import Login from './Pages/Login';
 import NFT from './nftdata';
+import AddAccount from './Pages/CreateAccount';
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
         ))}
         <Route exact path='/login' element={<Login />}></Route>
         <Route exact path='/nftdata' element={<NFT />}></Route>
+        <Route exact path='/register' element={<AddAccount />} />
       </Routes>
     </Router>
 

@@ -11,7 +11,6 @@ import WalletCard from '../Assests/walletCard.webp'
 
 // Logo
 const LogoStyles = styled('div')(({ theme }) => ({
-    // padding: theme.spacing(1),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -78,7 +77,7 @@ const Balance = styled(Typography)(({ theme }) => ({
 export function WalletPreview(props) {
     return (
         <WalletWrap>
-            <WalletNumber>{props.wallet}</WalletNumber>
+            <WalletNumber>#{props.wallet}</WalletNumber>
             <img width="100%" alt='WalletBack' src={WalletCard} />
             <Balance>{props.balance}ETH</Balance>
         </WalletWrap>
@@ -115,7 +114,7 @@ const AssestPhoto = styled('img')(() => ({
 export function Assest(Props) {
     return (
         <AssestBlock>
-            <AssestPhoto src={Props.src} alt="sample" />
+            <AssestPhoto src={Props.src} alt="NFT" />
             <Stack flexDirection="row" alignItems="center">
                 <Container>
                     <Typography sx={{ fontWeight: 'bold', fontSize: '16pt', m: 0 }}>

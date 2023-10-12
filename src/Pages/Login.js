@@ -11,6 +11,8 @@ import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
+import Link from '@mui/material/Link';
+
 // Login form styles
 const LoginWrap = styled(Paper)(({ theme }) => ({
     borderRadius: 20,
@@ -46,7 +48,7 @@ export default function Login() {
     // Checking filled password and username
     const login = (e) => {
         e.preventDefault();
-        if ((username === "") && (password === "")) {
+        if ((username === "") || (password === "")) {
             setError_msg("Fill the username and password")
             setError(true)
         } else {
@@ -56,17 +58,14 @@ export default function Login() {
                     password: password,
                 })
                 .then((response) => {
-                    console.log(response.data.token, "response.data.token");
                     if (response.data.token) {
                         setToken(response.data.token);
                         localStorage.setItem("username", username);
                         navigate("/profile");
+                    } else {
+                        setError_msg(response.data.error)
+                        setError(true)
                     }
-                })
-                .catch((error) => {
-                    console.log(error, "error")
-                    setError_msg("Invalid username or password")
-                    setError(true)
                 });
         }
     }
@@ -92,6 +91,7 @@ export default function Login() {
                     <p>You are already logged in.</p>
                 ) : (
                     <Stack sx={{ width: '100%', maxWidth: '400px' }} mt={3}>
+                        <Typography pl={1} pb={3} mt={5} fontSize={30} fontWeight={600}>Welcome</Typography>
                         <Typography pl={1} fontWeight={600}>Username</Typography>
                         <TextField
                             id="outlined-multiline-flexible"
@@ -132,6 +132,13 @@ export default function Login() {
                         <Button onClick={login} sx={{ width: 'min-content', marginTop: 2, marginBottom: 6, marginLeft: 2 }} variant="outlined" href="/profile">
                             Login
                         </Button>
+                        <Typography pl={3} pb={5}>To create an account?
+                            <Link sx={{
+                                color: '#00aaff',
+                                fontWeight: "600"
+                            }} underline="none" href="/register" > Register
+                            </Link>
+                        </Typography>
                     </Stack>
                 )}
             </LoginWrap>

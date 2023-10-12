@@ -1,8 +1,6 @@
-import { createContext } from 'react'
 import { useLocation, Navigate } from "react-router-dom"
 
 export const setToken = (token) => {
-
     localStorage.setItem('password_token', token)// make up your own token
 }
 
@@ -21,7 +19,3 @@ export function RequireToken({ children }) {
 
     return children;
 }
-
-export const Current_user = createContext();
-
-
