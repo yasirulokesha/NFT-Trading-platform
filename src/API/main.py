@@ -1,18 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File, Form, UploadFile
 from pydantic import BaseModel
 import jwt
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
-import json
 import mysql.connector
 
-import os
-from fastapi.responses import FileResponse
+# from database import connection
 
-from database import cursor, connection
-
-NFTDIR = "../Assests/NFTs/"
+import base64
+import io 
 
 SECERT_KEY = "YOUR_FAST_API_SECRET_KEY"
 ALGORITHM ="HS256"
@@ -24,6 +21,9 @@ db_config = {
     "password": "12345678",
     "database": "openTrade"
 }
+
+# Establish a database connection
+connection = mysql.connector.connect(**db_config)
 
 app = FastAPI()
 
@@ -50,6 +50,14 @@ class RegisterDetails(BaseModel):
     wallet: str
     balance: float
 
+class AssetUploadData(BaseModel):
+    asset: str
+    name: str
+    owner: str 
+    price: str  
+    category: str 
+    
+    
 @app.post("/login")
 async def user_login(loginitem: LoginItem):
     
@@ -91,14 +99,11 @@ class CurrentUser(BaseModel):
     username: str
 
 @app.post("/profile")
-async def ProfileDetails(User: CurrentUser):
-
+async def Profile_Details(User: CurrentUser):
+    
     try:
         # Get current logged username
         username = jsonable_encoder(User)["username"]
-        
-        # Establish a database connection
-        connection = mysql.connector.connect(**db_config)
         
         # Create a cursor to execute SQL queries
         cursor = connection.cursor()
@@ -126,59 +131,86 @@ async def ProfileDetails(User: CurrentUser):
         return {"error" : "Error load in Server"}
     
 @app.get("/")
-def ShowNFT():
-    # results: {
-    #     'name': str,
-    #     'image': str,
-    #     'price': float,
-    #     'owner' : str,
-    #     'category' : str
-    # }
-    # try:
-    #     # Establish a database connection
-    #     connection = mysql.connector.connect(**db_config)
+def Show_NFT():
+    cursor = connection.cursor()
+    try:
+        query = "SELECT Assest, AssestName, Price, Category, AssestID FROM DigitalAssests"
+        cursor.execute(query)
         
-    #     # Create a cursor to execute SQL queries
-    #     cursor = connection.cursor()
+        try:
+            results = cursor.fetchall()
+            # Transform the results into a suitable format, e.g., a list of dictionaries
+            formatted_results = [{"asset": row[0], "name": row[1], "price": row[2], "category": row[3], "id": row[4]} for row in results]
+            return formatted_results
         
-    #     # Define the SQL query to retrieve data (e.g., all students)
-    #     query = ("SELECT * FROM digitalAssests")
+        except Exception as query_error:
+
+            return f"Error in query: {query_error}"
         
-    #     # Execute the SQL query
-    #     cursor.execute(query)
-        
-    #     # Store query data in a variable
-    #     assest = cursor.fetchone()
-        
-    #     results.name = assest
-        
-    #     # Close the cursor and the database connection
-    #     cursor.close()
-    #     connection.close()
-        
-    #     if results is None:
-    #         return {"error": "User not found!"}
-    #     else:
-    #         if (data["password"] == results[1] ):
-    #             encoded_jwt = jwt.encode(data, SECERT_KEY, algorithm=ALGORITHM)
-    #             return {"token": encoded_jwt}
-    #         else:
-    #             return { "error": "Password does not match!"}
-            
-    # except:
-    #     return {"error": "Error load in Server"}
+    except Exception as e:
+        return {"error" : e}
     
-    files = os.listdir(NFTDIR)
-    # path = f"{NFTDIR}{files}"
-    return {"files" : files}
-    # for i in range (len(files)):  
-    #     path = f"{NFTDIR}{files[i+1]}"
-    #     return FileResponse(path)
-
-
-
+@app.get("/{category}")
+async def Filter(category: str):
+    cursor = connection.cursor()
+    try:
+        query = "SELECT Assest, AssestName, Price, Category, AssestID FROM DigitalAssests WHERE Category = %s"
+        cursor.execute(query, (category, ))
+        
+        try:
+            results = cursor.fetchall()
+            # Transform the results into a suitable format, e.g., a list of dictionaries
+            formatted_results = [{"asset": row[0], "name": row[1], "price": row[2], "category": row[3], "id": row[4]} for row in results]
+            return formatted_results
+        
+        except Exception as query_error:
+            return f"Error in query: {query_error}"
+        
+    except Exception as e:
+        return {"error" : e}
+    
+@app.get("/details/")
+async def Exports():
+    cursor = connection.cursor()
+    try:
+        query = "SELECT Assest, AssestName, Price, Category, AssestID, Owner FROM DigitalAssests"
+        cursor.execute(query)
+        
+        try:
+            results = cursor.fetchall()
+            # Transform the results into a suitable format, e.g., a list of dictionaries
+            formatted_results = [jsonable_encoder({"asset": row[0], "name": row[1], "price": row[2], "category": row[3], "id": row[4], "owner": row[5]} )for row in results]
+            return formatted_results
+        
+        except Exception as query_error:
+            return f"Error in query: {query_error}"
+        
+    except Exception as e:
+        return {"error" : e}
+    
+@app.get("/search/")
+async def Search(keyword: str):
+    cursor = connection.cursor()
+    try:
+        key = f"%{keyword}%"
+        query = "SELECT Assest, AssestName, Price, Category, AssestID FROM DigitalAssests WHERE AssestName LIKE %s "
+        cursor.execute(query, (key, ))
+        
+        try:
+            results = cursor.fetchall()
+            # Transform the results into a suitable format, e.g., a list of dictionaries
+            formatted_results = [{"asset": row[0], "name": row[1], "price": row[2], "category": row[3], "id": row[4]} for row in results]
+            return formatted_results
+        
+        except Exception as query_error:
+            return f"Error in query: {query_error}"
+        
+    except Exception as e:
+        return {"error" : e}
+    
+    
 @app.post("/add_account")
-async def AddAccount(input: RegisterDetails):
+async def Add_Account(input: RegisterDetails):
     
     details = jsonable_encoder(input)
     
@@ -212,7 +244,55 @@ async def AddAccount(input: RegisterDetails):
             
     except:
         return {"error": "Error load in Server"}
+        
+@app.post("/upload")
+async def Upload_Assest(uploads: AssetUploadData):
     
-    finally:
-        cursor.close()
-        connection.close()
+    uploaded_data = jsonable_encoder(uploads)
+    
+    try:
+        
+        cursor = connection.cursor()
+        
+        # Define the SQL query to retrieve data 
+        query = "INSERT INTO DigitalAssests ( Assest, AssestName, Owner, Price, Category) VALUES (%s, %s, %s, %s, %s)"
+        
+        try:
+            
+            data = (uploaded_data["asset"], uploaded_data["name"], uploaded_data["owner"], uploaded_data["price"], uploaded_data["category"])
+        
+            # Execute the SQL query
+            cursor.execute(query, data)
+            
+            connection.commit()
+            
+        except mysql.connector.Error as err:
+            return {"msg": f"Error: {err}"}
+        
+        # return {"msg":"uploade"};
+        return uploaded_data
+            
+    except:
+        return {"error": "Error load in Server"}
+    
+@app.get("/profile/feed/{username}")        
+async def Feed(username: str):
+    cursor = connection.cursor()
+    try:
+        query = "SELECT Assest, AssestName, Price, Category, AssestID FROM DigitalAssests WHERE Owner = %s"
+        cursor.execute(query, (username, ))
+        
+        try:
+            results = cursor.fetchall()
+            # Transform the results into a suitable format, e.g., a list of dictionaries
+            formatted_results = [{"asset": row[0], "name": row[1], "price": row[2], "category": row[3], "id": row[4]} for row in results]
+            return formatted_results
+        
+        except Exception as query_error:
+
+            return f"Error in query: {query_error}"
+        
+    except Exception as e:
+        return {"error" : e}
+
+

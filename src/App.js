@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   BrowserRouter as Router,
@@ -11,16 +11,32 @@ import Landing, { Assests } from './Pages/Landing';
 import AssestOverView from './Pages/AssestOverview';
 
 import Login from './Pages/Login';
-import NFT from './nftdata';
 import AddAccount from './Pages/CreateAccount';
 import AssestUpload from './Components/UploadForm';
+import axios from 'axios';
+import { useState } from 'react';
+
 
 export default function App() {
+  const [Data, setData] = useState([])
+
+  useEffect(() => {
+    axios.
+      get('http://localhost:8000/details/')
+      .then((response) => {
+        setData(response.data)
+      }).catch(
+        (error) => {
+          console.log("Error", error);
+        }
+      )
+  }, [])
   return (
     <Router>
       <Routes>
         <Route exact path='/' element={<Landing />}>
-          <Route exact path='/gaming' element={<Landing />} />
+          <Route path='/gaming' element={<Landing />} />
+          <Route path='/future' element={<Landing />} />
           <Route path='/art' element={<Landing />} />
           <Route path='/photography' element={<Landing />} />
         </Route>
@@ -28,8 +44,8 @@ export default function App() {
           <Route path='/profile/wallet' element={<Profile />}></Route>
           <Route path='/profile/activity' element={<Profile />}></Route>
         </Route>
-        {Assests.map((assest) => (
-          <Route path={assest.name} element={<AssestOverView src={assest.src} name={assest.name} own="#User123" type={assest.category} price={assest.price} />} />
+        {Data.map((assest) => (
+          <Route path={`${assest.id}`} element={<AssestOverView src={assest.asset} name={assest.name} own="#User123" type={assest.category} price={assest.price} />} />
         ))}
         <Route exact path='/login' element={<Login />}></Route>
         <Route exact path='/upload' element={<AssestUpload />}></Route>

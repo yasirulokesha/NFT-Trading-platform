@@ -1,5 +1,5 @@
 import { Container, Stack, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { SubLink, Assest, CustomLink } from '../Components/Components';
 
@@ -55,6 +55,7 @@ export default function Landing() {
           <div>
             <Stack flexWrap="wrap" direction="row" mb="10px">
               <SubLink active={true} to="/" placeholder="All" />
+              <SubLink to="/future" placeholder="Future" />
               <SubLink to="/gaming" placeholder="Gaming" />
               <SubLink to="/art" placeholder="Art" />
               <SubLink to="/photography" placeholder="Photography" />
@@ -63,10 +64,23 @@ export default function Landing() {
           </div>
         } >
         </Route>
+        <Route exact path='/future' element={
+          <div>
+            <Stack flexWrap="wrap" direction="row" mb="10px">
+              <SubLink to="/#" placeholder="All" />
+              <SubLink active={true} to="/future" placeholder="Future" />
+              <SubLink to="/gaming" placeholder="Gaming" />
+              <SubLink to="/art" placeholder="Art" />
+              <SubLink to="/photography" placeholder="Photography" />
+            </Stack>
+            <Future />
+          </div>
+        } />
         <Route exact path='/gaming' element={
           <div>
             <Stack flexWrap="wrap" direction="row" mb="10px">
               <SubLink to="/#" placeholder="All" />
+              <SubLink to="/future" placeholder="Future" />
               <SubLink active={true} to="/gaming" placeholder="Gaming" />
               <SubLink to="/art" placeholder="Art" />
               <SubLink to="/photography" placeholder="Photography" />
@@ -78,6 +92,7 @@ export default function Landing() {
           <div>
             <Stack flexWrap="wrap" direction="row" mb="10px">
               <SubLink to="/#" placeholder="All" />
+              <SubLink to="/future" placeholder="Future" />
               <SubLink to="/gaming" placeholder="Gaming" />
               <SubLink active={true} to="/art" placeholder="Art" />
               <SubLink to="/photography" placeholder="Photography" />
@@ -89,6 +104,7 @@ export default function Landing() {
           <div>
             <Stack flexWrap="wrap" direction="row" mb="10px">
               <SubLink to="/#" placeholder="All" />
+              <SubLink to="/future" placeholder="Future" />
               <SubLink to="/gaming" placeholder="Gaming" />
               <SubLink to="/art" placeholder="Art" />
               <SubLink active={true} to="/photography" placeholder="Photography" />
@@ -103,20 +119,20 @@ export default function Landing() {
 
 // Export the all NFT assests into the gallery
 export function All() {
-  const [data, setdata] = useState(Array())
-  axios.
-    get('http://127.0.0.1:8000/', {})
-    .then((responses) => {
-      // setdata(responses.data.files)
-      console.log(responses.data.files)
-    })
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    axios.
+      get('http://127.0.0.1:8000/')
+      .then((response) => {
+        setData(response.data)
+      })
+  }, [])
+
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
-      {/* {data.map((i) => {
-        <p>hi</p>
-      })} */}
-      {Assests.map((assest) => (
-        <CustomLink element={<Assest src={assest.src} name={assest.name} price={assest.price} />} to={`/` + assest.name} />
+      {data.map((asset) => (
+        <CustomLink element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
       ))}
     </Stack>
   )
@@ -124,54 +140,84 @@ export function All() {
 
 // Export the gaming NFTs for the gallery
 export function Gaming() {
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    axios.
+      get('http://127.0.0.1:8000/gaming')
+      .then((response) => {
+        setData(response.data)
+      })
+  }, [])
+
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
-      {Assests.map((assest) => {
-        if (assest.category === 'gaming') {
-          return (
-            <CustomLink element={<Assest src={assest.src} name={assest.name} price={assest.price} />} to={`/` + assest.name} />
-          )
-        } else {
-          return <></>;
-        }
-      }
-      )}
+      {data.map((asset) => (
+        <CustomLink element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
+      ))}
     </Stack>
   )
 }
 
 // Export the art NFTs for the gallery
 export function Art() {
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    axios.
+      get('http://127.0.0.1:8000/art')
+      .then((response) => {
+        setData(response.data)
+      })
+  }, [])
+
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
-      {Assests.map((assest) => {
-        if (assest.category === 'art') {
-          return (
-            <CustomLink element={<Assest src={assest.src} name={assest.name} price={assest.price} />} to={`/` + assest.name} />
-          )
-        } else {
-          return <></>;
-        }
-      }
-      )}
+      {data.map((asset) => (
+        <CustomLink element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
+      ))}
     </Stack>
   )
 }
 
 // Export the photography NFTs for the gallery
 export function Photography() {
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    axios.
+      get('http://127.0.0.1:8000/photography')
+      .then((response) => {
+        setData(response.data)
+      })
+  }, [])
+
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
-      {Assests.map((assest) => {
-        if (assest.category === 'photography') {
-          return (
-            <CustomLink element={<Assest src={assest.src} name={assest.name} price={assest.price} />} to={`/` + assest.name} />
-          )
-        } else {
-          return <></>;
-        }
-      }
-      )}
+      {data.map((asset) => (
+        <CustomLink element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
+      ))}
+    </Stack>
+  )
+}
+
+// Export the Future NFTs for the gallery
+export function Future() {
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    axios.
+      get('http://127.0.0.1:8000/future')
+      .then((response) => {
+        setData(response.data)
+      })
+  }, [])
+
+  return (
+    <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
+      {data.map((asset) => (
+        <CustomLink element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
+      ))}
     </Stack>
   )
 }

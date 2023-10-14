@@ -1,5 +1,5 @@
 import { Button, Container, Paper, Stack, Typography } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
     Route,
@@ -125,7 +125,6 @@ export default function Profile() {
             username: localStorage.getItem("username")
         })
         .then((response) => {
-            console.log(response.data.results, "response.data.results");
             if (response.data) {
                 // Set details from database
                 setUsername(response.data.username)
@@ -146,7 +145,6 @@ export default function Profile() {
                 onClose={CloseUploadDialog}
                 scroll='body'
             >
-
                 <DialogTitle>Upload Your NFT Here</DialogTitle>
                 <DialogContent sx={{
                     display: 'flex',
@@ -321,14 +319,22 @@ export function Activity() {
 
 // Export the NFTs gallery
 export function Feed() {
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        axios.
+            get('http://127.0.0.1:8000/profile/feed/'+localStorage.getItem("username"))
+            .then((response) => {
+                setData(response.data)
+            })
+    }, [])
+
     return (
-        <div>
-            <Stack flexWrap='wrap' flexDirection='row'>
-                {PrivateAssests.map((assest) => (
-                    <CustomLink element={<Assest src={assest.src} name={assest.name} price={assest.price} />} to={`/` + assest.name} />
-                ))}
-            </Stack>
-        </div>
+        <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
+            {data.map((asset) => (
+                <CustomLink element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
+            ))}
+        </Stack>
     )
 }
 

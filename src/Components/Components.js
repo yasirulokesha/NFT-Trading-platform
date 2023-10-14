@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, Container, Stack, Typography } from '@mui/material';
+import { Box, Container, Stack, Typography, FormControl } from '@mui/material';
 import logo from '../Assests/logo.png'
 import Link from '@mui/material/Link';
 import WalletCard from '../Assests/walletCard.webp'
+import { useHistory } from 'react-router-dom';
+import SearchResults from '../Pages/SearchResults';
+
 
 // Main styled --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -105,7 +108,7 @@ const AssestBlock = styled('div')(
 )
 const AssestPhoto = styled('img')(() => ({
     display: "block",
-    backgroundColor: "red",
+    backgroundColor: "#57cc99",
     width: '100%',
     height: 250,
     borderRadius: '10px',
@@ -121,7 +124,7 @@ export function Assest(Props) {
                         {Props.name}
                     </Typography>
                     <Typography sx={{ fontWeight: 'medium', fontSize: '10pt', m: 0 }}>
-                        {Props.price}
+                        {Props.price}ETH
                     </Typography>
                 </Container>
             </Stack>
@@ -129,57 +132,6 @@ export function Assest(Props) {
     )
 }
 
-// Search
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: "8px",
-    backgroundColor: alpha("#D9D9D9", 1),
-    '&:hover': {
-        backgroundColor: alpha("#D9D9D9", 0.25),
-    },
-    marginLeft: 0,
-    marginRight: 20,
-    width: '100%',
-    height: '39px',
-    maxWidth: '600px'
-}));
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: '#B4B4B4',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '80%',
-        [theme.breakpoints.up('sm')]: {
-            width: '12ch',
-            '&:focus': {
-                width: '20ch',
-            },
-        },
-    },
-}));
-export function SearchBox() {
-    return (
-        <Search>
-            <SearchIconWrapper>
-                <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ 'aria-label': 'search' }}
-            />
-        </Search>
-    )
-}
 
 // Link styles
 export function SubLink(props) {
