@@ -37,6 +37,7 @@ export default function AddAccount() {
     const [password, setPassword] = useState('')
     const [wallet, setwalletAddress] = useState('')
     const [balance, setbalance] = useState('')
+    const [mail, setmail] = useState('')
 
     const [error_msg, setError_msg] = useState('')
     const [error, setError] = useState(false)
@@ -54,6 +55,7 @@ export default function AddAccount() {
             if (!isNaN(parseFloat(balance)) && balance.trim() !== ' ') {
                 axios
                     .post("http://localhost:8000/add_account", {
+                        email: mail,
                         username: username,
                         password: password,
                         wallet: wallet,
@@ -61,7 +63,6 @@ export default function AddAccount() {
                     })
                     .then((response) => {
                         if (response.data) {
-                            // alert("Registered Successfully");
                             navigate("/login");
                         } else {
                             setError_msg(response.data.error)
@@ -86,6 +87,17 @@ export default function AddAccount() {
             <ContainerWrap elevation={24}>
                 <Typography pl={1} mt={5} fontSize={30} fontWeight={600}>Register</Typography>
                 <Stack sx={{ width: '100%', maxWidth: '400px' }} mt={3}>
+                    <Typography pl={1} fontWeight={400}>Email</Typography>
+                    <TextField
+                        type='email'
+                        id="outlined-multiline-flexible"
+                        multiline
+                        maxRows={4}
+                        sx={{
+                            padding: 2
+                        }}
+                        onChange={(e) => setmail(e.target.value)}
+                    />
                     <Typography pl={1} fontWeight={400}>Username</Typography>
                     <TextField
                         id="outlined-multiline-flexible"
@@ -134,7 +146,7 @@ export default function AddAccount() {
                     <Button onClick={register} sx={{ width: 'min-content', marginTop: 2, marginBottom: 6, marginLeft: 2, backgroundColor: '#00897b' }} variant="contained" href="/login">
                         Register
                     </Button>
-                    <Typography pl={3} pb={5}>Do you have already account? 
+                    <Typography pl={3} pb={5}>Do you have already account?
                         <Link sx={{
                             color: '#00aaff',
                             fontWeight: "600"

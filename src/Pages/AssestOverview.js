@@ -59,7 +59,7 @@ export default function AssestOverView(props) {
                             </Stack>
                             <Stack flexDirection='column' alignItems='left' mt={2} mb={2}>
                                 <Typography fontWeight={400} variant='body1'>Price</Typography>
-                                <Typography fontWeight={700} variant='h5'>{props.price}</Typography>
+                                <Typography fontWeight={700} variant='h5'>{props.price} ETH</Typography>
                             </Stack>
                             <Button fontWeight={700} sx={{
                                 backgroundColor: '#00A3FF',

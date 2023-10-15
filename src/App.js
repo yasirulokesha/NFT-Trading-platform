@@ -21,8 +21,7 @@ export default function App() {
   const [Data, setData] = useState([])
 
   useEffect(() => {
-    axios.
-      get('http://localhost:8000/details/')
+    axios.get('http://127.0.0.1:8000/details/')
       .then((response) => {
         setData(response.data)
       }).catch(
@@ -44,8 +43,8 @@ export default function App() {
           <Route path='/profile/wallet' element={<Profile />}></Route>
           <Route path='/profile/activity' element={<Profile />}></Route>
         </Route>
-        {Data.map((assest) => (
-          <Route path={`${assest.id}`} element={<AssestOverView src={assest.asset} name={assest.name} own="#User123" type={assest.category} price={assest.price} />} />
+        {Data.map((assest, index) => (
+          <Route key={index} path={`${assest.id}`} element={<AssestOverView src={assest.asset} name={assest.name} own={assest.owner} type={assest.category} price={assest.price} />} />
         ))}
         <Route exact path='/login' element={<Login />}></Route>
         <Route exact path='/upload' element={<AssestUpload />}></Route>

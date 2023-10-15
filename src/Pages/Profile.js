@@ -101,9 +101,8 @@ export default function Profile() {
     const [username, setUsername] = useState('')
     const [walletAddress, setwalletAddress] = useState('')
     const [balance, setBalance] = useState()
-    const [profileImg, setProfileImg] = useState("")
-
     const [Uploadhandle, setUploadhandle] = useState(false)
+    const [Email, setEmail] = useState('')
 
 
     const signOut = () => {
@@ -119,22 +118,24 @@ export default function Profile() {
     const CloseUploadDialog = () => {
         setUploadhandle(false)
     }
-
-    axios
-        .post("http://127.0.0.1:8000/profile", {
-            username: localStorage.getItem("username")
-        })
-        .then((response) => {
-            if (response.data) {
-                // Set details from database
-                setUsername(response.data.username)
-                setwalletAddress(response.data.wallet)
-                setBalance(response.data.balance)
-            }
-        })
-        .catch((error) => {
-            console.log("error")
-        });
+    useEffect(() => {
+        axios
+            .post("http://127.0.0.1:8000/profile", {
+                username: localStorage.getItem("username")
+            })
+            .then((response) => {
+                if (response.data) {
+                    // Set details from database
+                    setUsername(response.data.username)
+                    setwalletAddress(response.data.wallet)
+                    setBalance(response.data.balance)
+                    setEmail(response.data.email)
+                }
+            })
+            .catch((error) => {
+                console.log("error")
+            });
+    }, [])
 
     return (
         <RequireToken>
@@ -170,7 +171,7 @@ export default function Profile() {
                     <DetailsContainer>
                         <ProfilePhotoWrap src={ProfileImage} alt='Prifile picture' />
                         <Typography fontWeight={700} variant='h4'>{username}</Typography>
-                        <Typography fontWeight={500} variant='body1'>#{walletAddress}</Typography>
+                        <Typography fontWeight={500} variant='body1'>{Email}</Typography>
                         <Button fontWeight={700} sx={{
                             backgroundColor: '#ff4848',
                             borderRadius: 1,
@@ -323,7 +324,7 @@ export function Feed() {
 
     useEffect(() => {
         axios.
-            get('http://127.0.0.1:8000/profile/feed/'+localStorage.getItem("username"))
+            get('http://127.0.0.1:8000/profile/feed/' + localStorage.getItem("username"))
             .then((response) => {
                 setData(response.data)
             })

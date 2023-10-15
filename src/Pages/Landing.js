@@ -122,17 +122,21 @@ export function All() {
   const [data, setData] = useState([])
 
   useEffect(() => {
-    axios.
-      get('http://127.0.0.1:8000/')
+    axios.get('http://127.0.0.1:8000/')
       .then((response) => {
         setData(response.data)
       })
+      .catch(
+        (error) => {
+          console.log("Error fetching data")
+        }
+      )
   }, [])
 
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
-      {data.map((asset) => (
-        <CustomLink element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
+      {data.map((asset, index) => (
+        <CustomLink key={index} element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
       ))}
     </Stack>
   )
@@ -152,8 +156,8 @@ export function Gaming() {
 
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
-      {data.map((asset) => (
-        <CustomLink element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
+      {data.map((asset, index) => (
+        <CustomLink key={index} element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
       ))}
     </Stack>
   )
@@ -173,9 +177,14 @@ export function Art() {
 
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
-      {data.map((asset) => (
-        <CustomLink element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
-      ))}
+      {Array.isArray(data) ? (
+          data.map((asset, index) => (
+            <CustomLink key={index} element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
+          ))
+      ) : (
+        <Typography>Loading...</Typography>
+      )}
+
     </Stack>
   )
 }
@@ -194,9 +203,13 @@ export function Photography() {
 
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
-      {data.map((asset) => (
-        <CustomLink element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
-      ))}
+      {Array.isArray(data) ? (
+          data.map((asset, index) => (
+            <CustomLink key={index} element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
+          ))
+      ) : (
+        <Typography>Loading...</Typography>
+      )}
     </Stack>
   )
 }
@@ -215,9 +228,13 @@ export function Future() {
 
   return (
     <Stack direction="row" useFlexGap flexWrap="wrap" spacing={2}>
-      {data.map((asset) => (
-        <CustomLink element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
-      ))}
+      {Array.isArray(data) ? (
+          data.map((asset, index) => (
+            <CustomLink key={index} element={<Assest src={asset['asset']} name={asset['name']} price={asset['price']} />} to={`/` + asset["id"]} />
+          ))
+      ) : (
+        <Typography>Loading...</Typography>
+      )}
     </Stack>
   )
 }

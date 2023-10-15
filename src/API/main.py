@@ -1,29 +1,15 @@
-from fastapi import FastAPI, File, Form, UploadFile
-from pydantic import BaseModel
+from fastapi import FastAPI
 import jwt
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
 import mysql.connector
-
-# from database import connection
-
-import base64
-import io 
+from database import db_config 
+from models import LoginItem, RegisterDetails, AssetUploadData, CurrentUser
 
 SECERT_KEY = "YOUR_FAST_API_SECRET_KEY"
 ALGORITHM ="HS256"
 ACCESS_TOKEN_EXPIRES_MINUTES = 800
-
-db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "12345678",
-    "database": "openTrade"
-}
-
-# Establish a database connection
-connection = mysql.connector.connect(**db_config)
 
 app = FastAPI()
 
@@ -39,31 +25,17 @@ app.add_middleware(
     allow_methods = ["*"],
     allow_headers= ["*"],
 )
-
-class LoginItem(BaseModel):
-    username: str
-    password: str
     
-class RegisterDetails(BaseModel):
-    username:str
-    password: str
-    wallet: str
-    balance: float
-
-class AssetUploadData(BaseModel):
-    asset: str
-    name: str
-    owner: str 
-    price: str  
-    category: str 
-    
-    
+# Login API
 @app.post("/login")
 async def user_login(loginitem: LoginItem):
     
     data = jsonable_encoder(loginitem)
     
     try:
+        
+        # Establish a database connection
+        connection = mysql.connector.connect(**db_config)
         
         cursor = connection.cursor()
         
@@ -95,13 +67,15 @@ async def user_login(loginitem: LoginItem):
     except:
         return {"error": "Error load in Server"}
 
-class CurrentUser(BaseModel):
-    username: str
 
+# Load the profile details
 @app.post("/profile")
 async def Profile_Details(User: CurrentUser):
     
     try:
+         # Establish a database connection
+        connection = mysql.connector.connect(**db_config)
+        
         # Get current logged username
         username = jsonable_encoder(User)["username"]
         
@@ -125,13 +99,18 @@ async def Profile_Details(User: CurrentUser):
         connection.close()
         
         # Return user details
-        return {"username" : results[0], "wallet": results[2], "balance": results[3]}
+        return {"username" : results[1], "wallet": results[3], "balance": results[4], "email": results[0]}
     
     except:
         return {"error" : "Error load in Server"}
-    
+
+# Get all Assets for the preview
 @app.get("/")
 def Show_NFT():
+    
+     # Establish a database connection
+    connection = mysql.connector.connect(**db_config)
+        
     cursor = connection.cursor()
     try:
         query = "SELECT Assest, AssestName, Price, Category, AssestID FROM DigitalAssests"
@@ -150,8 +129,12 @@ def Show_NFT():
     except Exception as e:
         return {"error" : e}
     
+# Get filtered by category    
 @app.get("/{category}")
 async def Filter(category: str):
+    # Establish a database connection
+    connection = mysql.connector.connect(**db_config)
+    
     cursor = connection.cursor()
     try:
         query = "SELECT Assest, AssestName, Price, Category, AssestID FROM DigitalAssests WHERE Category = %s"
@@ -168,9 +151,13 @@ async def Filter(category: str):
         
     except Exception as e:
         return {"error" : e}
-    
+ 
+# Get details about an asset   
 @app.get("/details/")
 async def Exports():
+     # Establish a database connection
+    connection = mysql.connector.connect(**db_config)
+        
     cursor = connection.cursor()
     try:
         query = "SELECT Assest, AssestName, Price, Category, AssestID, Owner FROM DigitalAssests"
@@ -188,8 +175,12 @@ async def Exports():
     except Exception as e:
         return {"error" : e}
     
+# Search from a keyword
 @app.get("/search/")
 async def Search(keyword: str):
+     # Establish a database connection
+    connection = mysql.connector.connect(**db_config)
+        
     cursor = connection.cursor()
     try:
         key = f"%{keyword}%"
@@ -208,13 +199,17 @@ async def Search(keyword: str):
     except Exception as e:
         return {"error" : e}
     
-    
+# Add acccount to sql
 @app.post("/add_account")
 async def Add_Account(input: RegisterDetails):
+    
+     # Establish a database connection
+    connection = mysql.connector.connect(**db_config)
     
     details = jsonable_encoder(input)
     
     # Get inputs from the front-end
+    email = details["email"]
     username = details["username"]
     password = details["password"]
     wallet = details["wallet"]
@@ -225,18 +220,16 @@ async def Add_Account(input: RegisterDetails):
         cursor = connection.cursor()
         
         # Define the SQL query to retrieve data 
-        query = "INSERT INTO userProfiles (username, password, walletNumber, walletBalance) VALUES (%s, %s, %s, %s)"
+        query = "INSERT INTO userProfiles (email, username, password, walletNumber, walletBalance) VALUES (%s, %s, %s, %s, %s)"
         
         try:
-            data = (username, password, wallet, balance)
+            data = (email, username, password, wallet, balance)
         
             # Execute the SQL query
             cursor.execute(query, data)
             
             connection.commit()
-            
-            msg = "Query Ok!"
-            
+        
         except mysql.connector.Error as err:
             return {"error": f"Error: {err}"}
         
@@ -244,9 +237,14 @@ async def Add_Account(input: RegisterDetails):
             
     except:
         return {"error": "Error load in Server"}
-        
+
+# Upload assets
 @app.post("/upload")
 async def Upload_Assest(uploads: AssetUploadData):
+    
+     # Establish a database connection
+    connection = mysql.connector.connect(**db_config)
+        
     
     uploaded_data = jsonable_encoder(uploads)
     
@@ -275,8 +273,13 @@ async def Upload_Assest(uploads: AssetUploadData):
     except:
         return {"error": "Error load in Server"}
     
+# Get assets for loggedIn user
 @app.get("/profile/feed/{username}")        
 async def Feed(username: str):
+    
+     # Establish a database connection
+    connection = mysql.connector.connect(**db_config)
+        
     cursor = connection.cursor()
     try:
         query = "SELECT Assest, AssestName, Price, Category, AssestID FROM DigitalAssests WHERE Owner = %s"
