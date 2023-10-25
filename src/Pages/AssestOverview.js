@@ -1,15 +1,14 @@
 import styled from '@emotion/styled'
 import { Box, Button, Container, Grid, Modal, Stack, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Wallet } from './Profile';
 import { WalletRounded } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 // NFT overview card styles
 const ArtWrap = styled('img')(() => ({
-    width: "100%",
     borderRadius: 30,
     border: "#6a6a6a",
     borderWidth: 1,
@@ -42,12 +41,39 @@ export default function AssestOverView(props) {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const username = localStorage.getItem("username")
+    const asset_id = `${props.id}`
+    const price = `${props.price}`
+    const owner = props.own
+    const name = props.name
+
+    // Function to purchase an asset
+    const purchase = () => {
+        if (username == props.own) {
+            alert("This is already purchased!")
+        } else {
+            axios
+                .post("http://localhost:8000/purchase", {
+                    user: username,
+                    asset_id: asset_id,
+                    asset_name: name,
+                    price: price,
+                    from_: owner
+                }).then(() => {
+                    alert("Succefully purchased this item!")
+                    window.location.reload();
+                }).catch((e) => {
+                    console.log({ username, asset_id, price, owner })
+                })
+        }
+    }
+
     return (
         <Container fixed >
             <Grid container>
                 <Stack pt={10} useFlexGap flexDirection="row" alignItems='center' flexWrap="wrap" spacing={6}>
                     <Grid item xs={11} md={5}>
-                        <ArtWrap alt='art' src={props.src} />
+                        <ArtWrap width="100%" alt='art' src={props.src} />
                     </Grid>
                     <Grid item >
                         <Stack>
@@ -78,7 +104,7 @@ export default function AssestOverView(props) {
                                 onClose={handleClose}
                             >
                                 <ModalBox>
-                                    <Wallet />
+                                    <ArtWrap width="50%" alt='art' src={props.src} />
                                     <Typography mt={3} variant='h6'>Price</Typography>
                                     <Typography >{props.price}</Typography>
                                     <Button fontWeight={700} sx={{
@@ -92,7 +118,7 @@ export default function AssestOverView(props) {
                                         '&: hover': {
                                             backgroundColor: '#9d0000'
                                         }
-                                    }} variant="contained" component={Link} to="/profile/activity" endIcon={<WalletRounded />}>
+                                    }} variant="contained" onClick={purchase} to="/profile/activity" endIcon={<WalletRounded />}>
                                         Checkout
                                     </Button>
                                 </ModalBox>

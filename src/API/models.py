@@ -21,3 +21,10 @@ class AssetUploadData(BaseModel):
 class CurrentUser(BaseModel):
     username: str
     
+class purchaseData(BaseModel):
+    user: str
+    asset_id : str
+    asset_name: str
+    price : str
+    from_ : str
+    

@@ -44,7 +44,7 @@ export default function App() {
           <Route path='/profile/activity' element={<Profile />}></Route>
         </Route>
         {Data.map((assest, index) => (
-          <Route key={index} path={`${assest.id}`} element={<AssestOverView src={assest.asset} name={assest.name} own={assest.owner} type={assest.category} price={assest.price} />} />
+          <Route key={index} path={`${assest.id}`} element={<AssestOverView id={assest.id} src={assest.asset} name={assest.name} own={assest.owner} type={assest.category} price={assest.price} />} />
         ))}
         <Route exact path='/login' element={<Login />}></Route>
         <Route exact path='/upload' element={<AssestUpload />}></Route>

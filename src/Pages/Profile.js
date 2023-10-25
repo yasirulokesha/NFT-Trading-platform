@@ -282,6 +282,17 @@ const rows = [
 
 // Building & exporting the Activity Table
 export function Activity() {
+    const [data, setData] = useState([])
+    const username = localStorage.getItem("username")
+
+    useEffect(() => {
+        axios.
+            post(`http://127.0.0.1:8000/activity/?user=${username}`)
+            .then((response) => {
+                setData(response.data)
+            })
+    }, [])
+
     return (
         <div>
             <TableContainer sx={{ marginTop: 10, borderRadius: 3 }} component={Paper}>
@@ -291,22 +302,20 @@ export function Activity() {
                             <StyledTableCell></StyledTableCell>
                             <StyledTableCell>Item</StyledTableCell>
                             <StyledTableCell align="right">Price&nbsp;(ETH)</StyledTableCell>
-                            <StyledTableCell align="right">Qty</StyledTableCell>
                             <StyledTableCell align="right">From</StyledTableCell>
                             <StyledTableCell align="right">To</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
-                            <StyledTableRow key={row.name}>
+                        {data.map((row) => (
+                            <StyledTableRow key={row.asset_name}>
                                 <StyledTableCell component="th" align='center'>
                                     <IconIndicate status={row.cat} />
                                 </StyledTableCell>
                                 <StyledTableCell component="th" scope="row">
-                                    {row.name}
+                                    {row.asset_name}
                                 </StyledTableCell>
                                 <StyledTableCell align="right">{row.price}</StyledTableCell>
-                                <StyledTableCell align="right">{row.qty}</StyledTableCell>
                                 <StyledTableCell align="right">{row.from}</StyledTableCell>
                                 <StyledTableCell align="right">{row.to}</StyledTableCell>
                             </StyledTableRow>

@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import mysql.connector
 from database import db_config 
-from models import LoginItem, RegisterDetails, AssetUploadData, CurrentUser
+from models import LoginItem, RegisterDetails, AssetUploadData, CurrentUser, purchaseData
 
 SECERT_KEY = "YOUR_FAST_API_SECRET_KEY"
 ALGORITHM ="HS256"
@@ -15,7 +15,7 @@ app = FastAPI()
 
 origins = {
     "http://localhost",
-    "http://localhost:3000",
+    "http://localhost:3001",
 }
 
 app.add_middleware(
@@ -267,8 +267,7 @@ async def Upload_Assest(uploads: AssetUploadData):
         except mysql.connector.Error as err:
             return {"msg": f"Error: {err}"}
         
-        # return {"msg":"uploade"};
-        return uploaded_data
+        return {"msg":"uploaded!"};
             
     except:
         return {"error": "Error load in Server"}
@@ -298,4 +297,60 @@ async def Feed(username: str):
     except Exception as e:
         return {"error" : e}
 
+@app.post("/purchase")
+async def purchase(purchaseData : purchaseData):
+    
+    data = jsonable_encoder(purchaseData)
+    
+    # Establish a database connection
+    connection = mysql.connector.connect(**db_config)
+    
+    new_owner = data['user']
+    asset = data['asset_id']
+    
+    try:
+        
+        cursor = connection.cursor()
 
+        try:
+            # Define the SQL query to retrieve data 
+            query = "INSERT INTO Transactions (AssestID, asset_name, Price, `from`, `to`) VALUES (%s, %s, %s, %s, %s)"
+            data = (data['asset_id'], data['asset_name'], data['price'], data['from_'], data['user'])
+            cursor.execute(query, data)
+            connection.commit()
+            
+            
+            Update_query = "UPDATE DigitalAssests SET `Owner` = %s WHERE AssestID = %s"
+            values = (new_owner, asset )
+            cursor.execute(Update_query, values)
+            connection.commit()
+            
+            return {"msg":"uploaded!"}
+            
+        except mysql.connector.Error as err:
+            return {"msg": f"Error: {err}"}
+          
+    except:
+        return {"error": "Error load in Server"}
+
+@app.post("/activity/")
+async def Activity(user: str):
+    # Establish a database connection
+    connection = mysql.connector.connect(**db_config)
+        
+    cursor = connection.cursor()
+    try:
+        query = "SELECT `asset_name`, `Price`, `from`, `to` FROM `Transactions` WHERE `to` = %s OR `from` = %s"
+        cursor.execute(query, (user, user))
+        
+        try:
+            results = cursor.fetchall()
+            # Transform the results into a suitable format, e.g., a list of dictionaries
+            formatted_results = [jsonable_encoder({"asset_name": row[0], "price": row[1], "from": row[2], "to": row[3]} )for row in results]
+            return formatted_results
+        
+        except Exception as query_error:
+            return f"Error in query: {query_error}"
+        
+    except Exception as e:
+        return {"error" : e}
