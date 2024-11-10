@@ -4,7 +4,6 @@
 <ul>
  <li>Yasiru Lokesha</li>
  <li>Prawud Rathnayake</li>
- <li>Mahdi Razie</li>
 </ul>
 
 #About Project
